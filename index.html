@@ -1131,6 +1131,9 @@ tr:hover td { background:var(--light); }
             <div><span style="color:var(--muted);font-size:10px;">Downpayment</span><br><strong id="ia-dp" style="color:var(--teal);">—</strong></div>
           </div>
           <div style="font-size:10px;color:var(--muted);margin-top:6px;">This downpayment will be auto-deducted from the balance.</div>
+          <div id="ia-pkg-note" style="display:none;font-size:11px;color:var(--gold);margin-top:8px;background:rgba(215,144,104,0.08);border:1px solid rgba(215,144,104,0.25);border-radius:6px;padding:6px 8px;">
+            🎂 <span id="ia-pkg-total">—</span> — added to the invoice automatically from the client's built package.
+          </div>
         </div>
       </div>
 
@@ -4245,16 +4248,22 @@ async function saveAck(){
         service: service,
         mop: mop,
         downpayment: dp,
+        totalPrice: total,
         bookDate: bookDate,
         timeSlot: (document.getElementById('ma-time')?.value||'').trim()
       });
       if(result.ok){
-        // Add the ack receipt to local DB
-        var ack = result.ack || {
+        // Add the ack receipt to local DB. Build from the fallback shape first,
+        // then layer the server's ack (if any) on top — but always keep OUR
+        // totalPrice: the server's confirmBooking doesn't necessarily know
+        // about it yet, and we never want the built package's price to be
+        // silently dropped just because result.ack came back without it.
+        var ack = Object.assign({
           id: result.ackId||uid(), date: todayStr(), fbName: fbName, email: email,
           service: service, bookDate: bookDate, mop: mop,
           downpayment: dp, totalPrice: total, ackNum: result.ackNum||'', status: 'Confirmed'
-        };
+        }, result.ack || {});
+        if(!ack.totalPrice) ack.totalPrice = total;
         ack.status = 'Confirmed';
         if(!DB.acknowledgements) DB.acknowledgements = [];
         DB.acknowledgements.push(ack);
@@ -4821,6 +4830,22 @@ function showAckDP(a, dpEl, box){
   if(iaDp)   iaDp.textContent   = '₱'+fmt(+a.downpayment);
   if(dpEl)   dpEl.value = a.downpayment;
   if(box)    box.style.display = '';
+
+  // ClickLounge Birthday Experience only: the total the client built in the
+  // mood-board (stored on the acknowledgement as totalPrice) is added to this
+  // invoice as its own line item, so staff don't have to reconstruct the
+  // built package's pricing by hand from the general service catalog.
+  var pkgNote  = document.getElementById('ia-pkg-note');
+  var pkgTotal = document.getElementById('ia-pkg-total');
+  var isCBE    = /^ClickLounge Birthday Experience/i.test(a.service||'');
+  var total    = +a.totalPrice || 0;
+  if(isCBE && total > 0){
+    if(!INV.length) addItem(a.service, total, false);
+    if(pkgTotal) pkgTotal.textContent = (a.service||'CBE package') + ' — ₱' + fmt(total);
+    if(pkgNote)  pkgNote.style.display = '';
+  } else if(pkgNote){
+    pkgNote.style.display = 'none';
+  }
 }
 function viewAckFromInv(){
   const name=document.getElementById('inv-client').value.trim();

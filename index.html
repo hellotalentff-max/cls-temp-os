@@ -2358,7 +2358,7 @@ tr:hover td { background:var(--light); }
       <div style="padding:8px;text-align:center;font-size:10px;font-weight:600;color:var(--teal-lt);text-transform:uppercase;letter-spacing:1px;">Sat</div>
       <div style="padding:8px;text-align:center;font-size:10px;font-weight:600;color:rgba(232,239,238,0.3);text-transform:uppercase;letter-spacing:1px;">Sun</div>
     </div>
-    <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--light2);grid-auto-rows:minmax(90px,auto);"></div>
+    <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--light2);"></div>
   </div>
 
   <!-- Pending bookings list -->
@@ -3158,13 +3158,13 @@ function renderCalendar(){
   var html = '';
 
   for(var i = 0; i < firstOffset; i++){
-    html += '<div style="height:100%;background:var(--light);border:1px solid var(--light2);"></div>';
+    html += '<div style="aspect-ratio:1;background:var(--light);border:1px solid var(--light2);"></div>';
   }
 
   function bookingChip(name, color, border){
     return '<div style="font-size:9px;background:'+color+';border:1px solid '+border+
            ';border-radius:3px;padding:1px 4px;margin-top:2px;overflow:hidden;'+
-           'text-overflow:ellipsis;white-space:nowrap;">'+escHtml(name)+'</div>';
+           'text-overflow:ellipsis;white-space:nowrap;width:100%;box-sizing:border-box;">'+escHtml(name)+'</div>';
   }
   // Client name only (no package) — trims to a compact display
   function firstNameLast(full){
@@ -3174,6 +3174,29 @@ function renderCalendar(){
   function _evSlotMin(ev){
     var m = String(ev.start||'').match(/T(\d{2}):(\d{2})/);
     return m ? parseInt(m[1])*60 + parseInt(m[2]) : 9999;
+  }
+  // ── ClickLounge Birthday Experience: compact calendar label ──
+  // Full package name is "ClickLounge Birthday Experience: {Tier} + {Mood} +
+  // {Keepsake}" — far too long for a day chip. Show "CBE - Tier - Client"
+  // instead. Reads the package straight from the event's description
+  // ("Package: ...") rather than guessing from the title, since that's the
+  // clean, labeled field createBooking already writes.
+  function _isCBEPkg(pkgName){ return /^ClickLounge Birthday Experience/i.test(pkgName||''); }
+  function _cbeTier(pkgName){
+    var m = String(pkgName||'').match(/^ClickLounge Birthday Experience:\s*([^+]+)/i);
+    return m ? m[1].trim() : '';
+  }
+  function _cbeChipLabel(pkgName, clientName){
+    var tier = _cbeTier(pkgName);
+    return ['CBE', tier, String(clientName||'').trim()].filter(Boolean).join(' - ');
+  }
+  function _evPackageFromDesc(ev){
+    var m = (ev.description||'').match(/Package:\s*(.+?)\s*\(₱/i);
+    return m ? m[1].trim() : '';
+  }
+  function _evNameFromDesc(ev){
+    var m = (ev.description||'').match(/FB Name:\s*(.+)/i);
+    return m ? m[1].split('\n')[0].trim() : '';
   }
 
   for(var d = 1; d <= daysInMo; d++){
@@ -3269,19 +3292,24 @@ function renderCalendar(){
       var style = s.includes('cancel') ? ['#f8d7da','#c0544a']
                 : s.includes('confirm') ? ['#d4edda','#51897d']
                 : ['#fff3cd','#ffc107'];
-      dayItems.push({ name: firstNameLast(a.fbName), t: _slotMin(a.timeSlot||a.time), bg: style[0], bd: style[1] });
+      var label = _isCBEPkg(a.service) ? _cbeChipLabel(a.service, a.fbName) : firstNameLast(a.fbName);
+      dayItems.push({ name: label, t: _slotMin(a.timeSlot||a.time), bg: style[0], bd: style[1] });
     });
     evPend.forEach(function(ev){
-      dayItems.push({ name: firstNameLast(_evClientName(ev)), t: _evSlotMin(ev), bg:'#fff3cd', bd:'#ffc107' });
+      var descPkg = _evPackageFromDesc(ev);
+      var label = _isCBEPkg(descPkg) ? _cbeChipLabel(descPkg, _evNameFromDesc(ev) || _evClientName(ev)) : firstNameLast(_evClientName(ev));
+      dayItems.push({ name: label, t: _evSlotMin(ev), bg:'#fff3cd', bd:'#ffc107' });
     });
     evConf.forEach(function(ev){
-      dayItems.push({ name: firstNameLast(_evClientName(ev)), t: _evSlotMin(ev), bg:'#d4edda', bd:'#51897d' });
+      var descPkg = _evPackageFromDesc(ev);
+      var label = _isCBEPkg(descPkg) ? _cbeChipLabel(descPkg, _evNameFromDesc(ev) || _evClientName(ev)) : firstNameLast(_evClientName(ev));
+      dayItems.push({ name: label, t: _evSlotMin(ev), bg:'#d4edda', bd:'#51897d' });
     });
     dayItems.sort(function(a,b){ return a.t - b.t; });
     dayItems.forEach(function(it){ chips += bookingChip(it.name, it.bg, it.bd); });
 
-    html += '<div style="min-height:90px;height:100%;box-sizing:border-box;background:'+bg+';border:1px solid var(--light2);'+
-            'padding:5px;cursor:pointer;" onclick="calDayClick(\''+dateStr+'\')">'+
+    html += '<div style="aspect-ratio:1;box-sizing:border-box;background:'+bg+';border:1px solid var(--light2);'+
+            'padding:5px;cursor:pointer;overflow-y:auto;overflow-x:hidden;" onclick="calDayClick(\''+dateStr+'\')">'+
             '<div style="font-size:11px;font-weight:'+(isToday?'700':'500')+';color:'+
             (isToday?'var(--teal)':isRest?'var(--danger)':'var(--text)')+';margin-bottom:3px;">'+d+'</div>'+
             chips+'</div>';

@@ -1230,34 +1230,289 @@ tr:hover td { background:var(--light); }
 
 <!-- CLIENTS -->
 <div id="page-clients" class="page">
+  <style>
+    /* ── Scoped Clients page styles ── */
+    .cl-hub-hero{
+      background:linear-gradient(135deg,#51897d 0%,#3d6b61 100%);
+      border-radius:14px;
+      padding:24px 28px;
+      margin-bottom:18px;
+      display:flex;
+      align-items:center;
+      gap:20px;
+      flex-wrap:wrap;
+      color:#fff;
+      box-shadow:0 6px 24px rgba(81,137,125,0.22);
+      position:relative;
+      overflow:hidden;
+    }
+    .cl-hub-hero::before{
+      content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;
+      background:radial-gradient(circle,rgba(215,144,104,0.18) 0%,transparent 70%);
+      pointer-events:none;
+    }
+    .cl-hub-hero-icon{font-size:42px;line-height:1;flex-shrink:0;}
+    .cl-hub-hero-body{flex:1;min-width:220px;position:relative;z-index:1;}
+    .cl-hub-hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.75;margin-bottom:4px;}
+    .cl-hub-hero-title{font-size:22px;font-weight:800;margin-bottom:4px;letter-spacing:-0.3px;}
+    .cl-hub-hero-desc{font-size:12.5px;opacity:0.88;line-height:1.55;max-width:480px;}
+    .cl-hub-launch-btn{
+      background:#d79068;
+      color:#fff !important;
+      text-decoration:none;
+      padding:13px 24px;
+      border-radius:30px;
+      font-weight:700;
+      font-size:13px;
+      letter-spacing:0.4px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      box-shadow:0 4px 14px rgba(0,0,0,0.18);
+      white-space:nowrap;
+      transition:transform 0.15s,box-shadow 0.15s;
+      position:relative;
+      z-index:1;
+    }
+    .cl-hub-launch-btn:hover{transform:translateY(-2px);box-shadow:0 7px 20px rgba(0,0,0,0.25);}
+
+    .cl-hub-section-label{
+      font-size:10px;
+      font-weight:700;
+      color:var(--muted, #6b8c8c);
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+      margin:6px 0 10px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .cl-hub-section-label::after{content:'';flex:1;height:1px;background:var(--border, #e0e6e4);}
+
+    .cl-kpi-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .cl-kpi{
+      background:#fff;
+      border:1px solid var(--border, #e0e6e4);
+      border-radius:12px;
+      padding:16px 18px;
+      transition:transform 0.15s,box-shadow 0.15s,border-color 0.15s;
+      position:relative;
+      overflow:hidden;
+    }
+    .cl-kpi:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,0.05);border-color:#cbd6d2;}
+    .cl-kpi-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+    .cl-kpi-label{
+      font-size:10px;
+      font-weight:700;
+      color:var(--muted, #6b8c8c);
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+    .cl-kpi-icon{font-size:16px;opacity:0.6;}
+    .cl-kpi-value{
+      font-size:28px;
+      font-weight:800;
+      color:var(--slate, #2f4f4f);
+      line-height:1;
+      margin-bottom:4px;
+      letter-spacing:-0.5px;
+    }
+    .cl-kpi-sub{font-size:11px;color:var(--muted, #6b8c8c);font-weight:500;}
+
+    .cl-kpi.accent-active{border-left:3px solid #3d8c6e;}
+    .cl-kpi.accent-active .cl-kpi-value{color:#3d8c6e;}
+    .cl-kpi.accent-vip{border-left:3px solid #d79068;}
+    .cl-kpi.accent-vip .cl-kpi-value{color:#b8860b;}
+    .cl-kpi.accent-new{border-left:3px solid #51897d;}
+    .cl-kpi.accent-new .cl-kpi-value{color:#51897d;}
+    .cl-kpi.accent-bday{border-left:3px solid #d79068;background:linear-gradient(135deg,#fff 70%,#fff8e8);}
+    .cl-kpi.accent-bday .cl-kpi-value{color:#d79068;}
+
+    .cl-report-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:14px;
+    }
+    .cl-report-card{
+      background:#fff;
+      border:1px solid var(--border, #e0e6e4);
+      border-radius:12px;
+      padding:18px 20px;
+      transition:box-shadow 0.15s;
+    }
+    .cl-report-card:hover{box-shadow:0 4px 14px rgba(0,0,0,0.04);}
+    .cl-report-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding-bottom:10px;
+      margin-bottom:12px;
+      border-bottom:1px solid var(--border, #e0e6e4);
+    }
+    .cl-report-title{
+      font-size:12px;
+      font-weight:700;
+      color:var(--slate, #2f4f4f);
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .cl-report-tag{
+      font-size:9px;
+      font-weight:700;
+      color:#d79068;
+      background:#fff8e8;
+      padding:2px 8px;
+      border-radius:10px;
+      letter-spacing:0.4px;
+      text-transform:uppercase;
+    }
+
+    .cl-tier-row{margin-bottom:10px;}
+    .cl-tier-row:last-child{margin-bottom:0;}
+    .cl-tier-head{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;}
+    .cl-tier-head .name{font-weight:600;}
+    .cl-tier-head .stat{color:var(--muted, #6b8c8c);font-size:11px;}
+    .cl-tier-bar{background:#f4f7f6;height:7px;border-radius:4px;overflow:hidden;}
+    .cl-tier-bar-fill{height:100%;border-radius:4px;transition:width 0.4s;}
+
+    .cl-att-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:10px 0;
+      border-bottom:1px solid var(--border, #e0e6e4);
+      font-size:12.5px;
+    }
+    .cl-att-row:last-child{border-bottom:none;padding-bottom:0;}
+    .cl-att-row:first-child{padding-top:0;}
+    .cl-att-text{display:flex;align-items:center;gap:8px;}
+    .cl-att-icon{font-size:16px;}
+    .cl-att-link{
+      font-size:11px;
+      font-weight:600;
+      text-decoration:none;
+      padding:4px 10px;
+      border-radius:14px;
+      transition:all 0.15s;
+    }
+    .cl-att-link:hover{background:rgba(0,0,0,0.05);}
+    .cl-att-empty{text-align:center;padding:20px 8px;color:#3d8c6e;font-size:13px;font-weight:600;}
+
+    .cl-recent-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:10px 0;
+      border-bottom:1px solid var(--border, #e0e6e4);
+      gap:8px;
+    }
+    .cl-recent-row:last-child{border-bottom:none;padding-bottom:0;}
+    .cl-recent-row:first-child{padding-top:0;}
+    .cl-recent-name{font-size:13px;font-weight:600;color:var(--slate, #2f4f4f);}
+    .cl-recent-email{font-size:11px;color:var(--muted, #6b8c8c);margin-top:1px;}
+    .cl-recent-date{
+      font-size:10px;
+      color:var(--muted, #6b8c8c);
+      white-space:nowrap;
+      background:#f4f7f6;
+      padding:3px 8px;
+      border-radius:10px;
+      font-weight:500;
+    }
+
+    @media(max-width:640px){
+      .cl-hub-hero{padding:20px;}
+      .cl-hub-hero-title{font-size:19px;}
+      .cl-hub-launch-btn{width:100%;justify-content:center;}
+      .cl-kpi-value{font-size:24px;}
+    }
+  </style>
+
   <div class="ph">
-    <div><h2>Client Records</h2><p>CRM — history, activity and direct messaging</p></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn btn-sm btn-outline" onclick="openImportClients()">📥 Import CSV</button>
-      <button class="btn btn-gold" onclick="openCRMCompose()">✉ Send Campaign</button>
+    <div><h2>👥 Clients</h2><p>Quick CRM access + client snapshot</p></div>
+    <button class="btn btn-sm btn-outline" onclick="renderClientsHub()">🔄 Refresh</button>
+  </div>
+
+  <!-- ── BIG CRM LINK CARD ── -->
+  <div class="cl-hub-hero">
+    <div class="cl-hub-hero-icon">⭐</div>
+    <div class="cl-hub-hero-body">
+      <div class="cl-hub-hero-eyebrow">CLS OS · Client Management</div>
+      <div class="cl-hub-hero-title">Open ClickCard CRM</div>
+      <div class="cl-hub-hero-desc">Lifecycle pipeline, RFM scoring, email campaigns, points management, and data cleanup — all in one place.</div>
+    </div>
+    <a href="https://hellotalentff-max.github.io/clicklounge-clickcard/" target="_blank" class="cl-hub-launch-btn">
+      Launch CRM →
+    </a>
+  </div>
+
+  <!-- ── KPI CARDS ── -->
+  <div class="cl-hub-section-label">📊 Quick Snapshot</div>
+  <div class="cl-kpi-grid">
+    <div class="cl-kpi">
+      <div class="cl-kpi-top"><div class="cl-kpi-label">Total Clients</div><div class="cl-kpi-icon">👥</div></div>
+      <div class="cl-kpi-value" id="cl-kpi-total">—</div>
+      <div class="cl-kpi-sub" id="cl-kpi-total-sub">all-time</div>
+    </div>
+    <div class="cl-kpi accent-active">
+      <div class="cl-kpi-top"><div class="cl-kpi-label">Active</div><div class="cl-kpi-icon">✨</div></div>
+      <div class="cl-kpi-value" id="cl-kpi-active">—</div>
+      <div class="cl-kpi-sub" id="cl-kpi-active-sub">visited in last 60d</div>
+    </div>
+    <div class="cl-kpi accent-vip">
+      <div class="cl-kpi-top"><div class="cl-kpi-label">VIP / Loyal</div><div class="cl-kpi-icon">⭐</div></div>
+      <div class="cl-kpi-value" id="cl-kpi-vip">—</div>
+      <div class="cl-kpi-sub" id="cl-kpi-vip-sub">5+ visits or ₱10k+</div>
+    </div>
+    <div class="cl-kpi accent-new">
+      <div class="cl-kpi-top"><div class="cl-kpi-label">New This Month</div><div class="cl-kpi-icon">🆕</div></div>
+      <div class="cl-kpi-value" id="cl-kpi-new">—</div>
+      <div class="cl-kpi-sub" id="cl-kpi-new-sub">first visits</div>
+    </div>
+    <div class="cl-kpi">
+      <div class="cl-kpi-top"><div class="cl-kpi-label">Email-Reachable</div><div class="cl-kpi-icon">📧</div></div>
+      <div class="cl-kpi-value" id="cl-kpi-email">—</div>
+      <div class="cl-kpi-sub" id="cl-kpi-email-sub">have email on file</div>
+    </div>
+    <div class="cl-kpi accent-bday">
+      <div class="cl-kpi-top"><div class="cl-kpi-label">Birthday This Month</div><div class="cl-kpi-icon">🎂</div></div>
+      <div class="cl-kpi-value" id="cl-kpi-bday">—</div>
+      <div class="cl-kpi-sub" id="cl-kpi-bday-sub">send a gift!</div>
     </div>
   </div>
 
-  <!-- Search + Filter row -->
-  <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
-    <input class="sinput" style="flex:1;min-width:200px;" type="text" id="cl-search" placeholder="Search by name, email, phone…" oninput="renderClients()">
-    <select class="sinput" style="width:150px;" id="cl-filter" onchange="renderClients()">
-      <option value="all">All Clients</option>
-      <option value="walkin">Walk-in only</option>
-      <option value="booked">Booked only</option>
-      <option value="smc-yes">SM Consent ✅</option>
-      <option value="smc-no">SM No Consent 🚫</option>
-      <option value="at-risk">At Risk (60d+)</option>
-      <option value="birthday-month">🎂 Birthday This Month</option>
-    </select>
-    <div id="cl-count" style="font-size:12px;color:var(--muted);white-space:nowrap;"></div>
+  <!-- ── REPORT GRID ── -->
+  <div class="cl-hub-section-label">📈 Reports</div>
+  <div class="cl-report-grid">
+    <div class="cl-report-card">
+      <div class="cl-report-header">
+        <div class="cl-report-title">🏆 Tier Distribution</div>
+      </div>
+      <div id="cl-tier-chart" style="font-size:12px;color:var(--muted);">Loading…</div>
+    </div>
+    <div class="cl-report-card">
+      <div class="cl-report-header">
+        <div class="cl-report-title">⚠ Attention Needed</div>
+      </div>
+      <div id="cl-attention" style="font-size:12px;color:var(--muted);">Loading…</div>
+    </div>
+    <div class="cl-report-card">
+      <div class="cl-report-header">
+        <div class="cl-report-title">🆕 Recently Added</div>
+      </div>
+      <div id="cl-recent" style="font-size:12px;color:var(--muted);">Loading…</div>
+    </div>
   </div>
+
   <input type="file" id="cl-import-file" accept=".csv" style="display:none" onchange="processClientImport(this)">
-
-  <!-- Client cards grid -->
-  <div id="cl-table"></div>
-
-  <!-- Client Profile Modal (full detail) rendered inside modal overlay -->
 </div>
 
 
@@ -1428,8 +1683,27 @@ tr:hover td { background:var(--light); }
           <label for="exp-notes-page">Notes</label>
           <input type="text" id="exp-notes-page" placeholder="Additional details (optional)">
         </div>
+        <div class="field mb16">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;">
+            <input type="checkbox" id="exp-recurring" onchange="toggleExpRecurFields()" style="width:16px;height:16px;">
+            🔁 Recurring expense
+          </label>
+        </div>
+        <div id="exp-recur-fields" class="frow c2" style="display:none;">
+          <div class="field mb16">
+            <label for="exp-recur-interval">Repeats every</label>
+            <select id="exp-recur-interval">
+              <option value="week">Week</option>
+              <option value="month" selected>Month</option>
+            </select>
+          </div>
+          <div class="field mb16">
+            <label for="exp-recur-count">How many times should it recur?</label>
+            <input type="number" id="exp-recur-count" placeholder="e.g. 3" min="1" step="1">
+          </div>
+        </div>
         <div class="fe">
-          <button class="btn btn-gold" style="min-width:140px;padding:10px;" onclick="saveExpensePage()">💾 Save Expense</button>
+          <button class="btn btn-gold" id="exp-save-btn" style="min-width:140px;padding:10px;" onclick="saveExpensePage()">💾 Save Expense</button>
         </div>
       </div>
     </div>
@@ -1442,8 +1716,14 @@ tr:hover td { background:var(--light); }
         <div id="exp-page-list"><div class="tm">No expenses recorded today.</div></div>
       </div>
       <div class="card">
-        <div class="ct">This Month</div>
-        <div id="exp-page-month"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+          <div class="ct" style="margin:0;">📊 Expense Report</div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <select id="exp-rep-month" style="padding:5px 9px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;" onchange="renderExpenseReport()"></select>
+            <button class="btn btn-sm btn-outline" onclick="exportExpenseCSV()">⬇ CSV</button>
+          </div>
+        </div>
+        <div id="exp-report"></div>
       </div>
     </div>
   </div>
@@ -1609,6 +1889,7 @@ tr:hover td { background:var(--light); }
   <!-- Report Category Tabs -->
   <div style="display:flex;gap:0;border-bottom:2px solid var(--light2);margin-bottom:24px;overflow-x:auto;">
     <button class="rep-cat-btn active" id="rcat-financial" onclick="setRepCat('financial')">💰 Financial</button>
+    <button class="rep-cat-btn" id="rcat-bookings" onclick="setRepCat('bookings')">📅 Bookings</button>
     <button class="rep-cat-btn" id="rcat-clients" onclick="setRepCat('clients')">👥 Clients</button>
     <button class="rep-cat-btn" id="rcat-packages" onclick="setRepCat('packages')">📦 Packages</button>
     <button class="rep-cat-btn" id="rcat-operations" onclick="setRepCat('operations')">⚙ Operations</button>
@@ -1697,6 +1978,19 @@ tr:hover td { background:var(--light); }
       <div id="fin-chart-mop" style="margin-top:20px;"></div>
     </div>
 
+    <!-- Month Profit Forecast -->
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-wrap:wrap;gap:8px;">
+        <div class="ct" style="margin:0;">🔮 Month Profit Forecast</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);">
+          HMU artist cost/session ₱
+          <input type="number" id="fc-hmu-cost" min="0" step="50" style="width:80px;padding:4px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;" onchange="saveHmuCost()">
+        </div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:12px;">Actual results so far + confirmed upcoming bookings − HMU artist fees − projected remaining expenses</div>
+      <div id="fin-forecast"></div>
+    </div>
+
     <!-- Cashflow Breakdown -->
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
@@ -1721,6 +2015,60 @@ tr:hover td { background:var(--light); }
         <div class="ct" style="margin:0;">💸 Expenses Report</div>
       </div>
       <div id="fin-exp-table"></div>
+    </div>
+  </div>
+
+  <!-- ══ BOOKINGS ══ -->
+  <div id="rep-cat-bookings" class="rep-cat" style="display:none;">
+    <div class="rep-section-grid">
+      <div class="rep-card-stat" id="bk-total"><div class="rs-label">Total Bookings</div><div class="rs-val">—</div></div>
+      <div class="rep-card-stat" id="bk-confirmed"><div class="rs-label">Confirmed</div><div class="rs-val">—</div></div>
+      <div class="rep-card-stat" id="bk-pending"><div class="rs-label">Pending Payment</div><div class="rs-val">—</div></div>
+      <div class="rep-card-stat" id="bk-cancelled"><div class="rs-label">Cancelled</div><div class="rs-val">—</div></div>
+    </div>
+    <div class="rep-section-grid" style="margin-top:16px;">
+      <div class="rep-card-stat" id="bk-revenue"><div class="rs-label">Booking Revenue</div><div class="rs-val">—</div></div>
+      <div class="rep-card-stat" id="bk-avg-dp"><div class="rs-label">Avg Downpayment</div><div class="rs-val">—</div></div>
+    </div>
+
+    <!-- Timeslot heatmap -->
+    <div class="card" style="margin-top:16px;">
+      <div class="ct">📊 Bookings by Time Slot</div>
+      <div id="bk-slot-chart" style="font-size:12px;"></div>
+    </div>
+
+    <!-- Bookings by Day of Week -->
+    <div class="card" style="margin-top:16px;">
+      <div class="ct">📅 Bookings by Day of Week</div>
+      <div id="bk-day-chart" style="font-size:12px;"></div>
+    </div>
+
+    <!-- Peak hours heatmap -->
+    <div class="card" style="margin-top:16px;">
+      <div class="ct">🔥 Peak Booking Slots by Day</div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:10px;">Darker = more bookings at that slot. Helps identify when clients prefer to book.</div>
+      <div id="bk-heatmap" style="overflow-x:auto;"></div>
+    </div>
+
+    <!-- When clients submit bookings -->
+    <div class="card" style="margin-top:16px;">
+      <div class="ct">🕐 When Clients Submit Bookings</div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:10px;">Shows what hour of the day clients are filling out the booking form — helps you know when to be online for inquiries.</div>
+      <div id="bk-submit-hour" style="font-size:12px;"></div>
+    </div>
+
+    <!-- What day clients submit bookings -->
+    <div class="card" style="margin-top:16px;">
+      <div class="ct">📅 What Day Clients Submit Bookings</div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:10px;">Which days of the week see the most online booking submissions.</div>
+      <div id="bk-submit-day" style="font-size:12px;"></div>
+    </div>
+
+    <!-- Lead time: how far in advance -->
+    <div class="card" style="margin-top:16px;">
+      <div class="ct">⏳ Booking Lead Time</div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:10px;">How many days before the session do clients book? Helps with planning and staffing.</div>
+      <div id="bk-lead-time" style="font-size:12px;"></div>
     </div>
   </div>
 
@@ -1856,9 +2204,9 @@ tr:hover td { background:var(--light); }
         <div class="field mb16"><label for="set-addr">Address</label><input type="text" id="set-addr" placeholder="Studio address"></div>
         <div class="field mb16"><label for="set-contact">Contact / FB Page</label><input type="text" id="set-contact" placeholder="FB page or phone"></div>
         <div class="field mb16">
-          <label for="set-eod-email">EOD Report Email</label>
-          <input type="email" id="set-eod-email" placeholder="owner@gmail.com">
-          <div style="font-size:10px;color:var(--muted);margin-top:4px;">End of Shift reports will be emailed here after each submission.</div>
+          <label for="set-eod-email">EOD Report Email <span style="font-size:10px;color:var(--muted);font-weight:400;">(optional)</span></label>
+          <input type="email" id="set-eod-email" placeholder="clickloungestudio@gmail.com">
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;">End of Shift reports auto-send to <strong>clickloungestudio@gmail.com</strong>. Override here only if you want them sent elsewhere.</div>
         <div class="field mb16">
           <label for="set-tasks-url">Tasks App URL</label>
           <input type="url" id="set-tasks-url" placeholder="https://your-tasks-app-url.com">
@@ -1984,6 +2332,8 @@ tr:hover td { background:var(--light); }
       <button class="btn btn-teal btn-sm" onclick="calNavToday()">Today</button>
       <button class="btn btn-outline btn-sm" onclick="calNav(1)">Next →</button>
       <button class="btn btn-danger btn-sm" onclick="openBlockDialog()">🚫 Block Date/Time</button>
+      <button class="btn btn-outline btn-sm" onclick="if(confirm('Create session prep tasks for all existing photographer bookings that don\'t have one yet?')) backfillPhotographerTasks();" title="Create prep tasks for past bookings">🔄 Sync Session Tasks</button>
+      <button class="btn btn-gold btn-sm" onclick="openQuickBook()">➕ New Booking</button>
     </div>
   </div>
 
@@ -2008,7 +2358,7 @@ tr:hover td { background:var(--light); }
       <div style="padding:8px;text-align:center;font-size:10px;font-weight:600;color:var(--teal-lt);text-transform:uppercase;letter-spacing:1px;">Sat</div>
       <div style="padding:8px;text-align:center;font-size:10px;font-weight:600;color:rgba(232,239,238,0.3);text-transform:uppercase;letter-spacing:1px;">Sun</div>
     </div>
-    <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--light2);grid-auto-rows:90px;"></div>
+    <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--light2);grid-auto-rows:minmax(90px,auto);"></div>
   </div>
 
   <!-- Pending bookings list -->
@@ -2174,7 +2524,7 @@ let _knownBookingIds = new Set();
 const SVC_DEFAULTS = {
   ss:[{n:'Snapshot Selfie',p:500},{n:'Tribe Time',p:800},{n:'Crowd Cam',p:1000},{n:'Crew Captures',p:1200},{n:'Frenzy Snaps',p:700},{n:'Party Clicks',p:1000},{n:'Click Captures',p:1500}],
   ph:[{n:'Styleshots S',p:1500},{n:'Styleshots L',p:2000},{n:'Fambam',p:1700},{n:'Famvibes',p:2200},{n:'Onederful',p:1500},{n:'Twogether',p:2000},{n:'Big Kid',p:2000},{n:'All Star',p:2500},{n:'Cap & Gown',p:700},{n:'Grad-u-click',p:1200},{n:'VIP Grad Glam',p:2500}],
-  ot:[{n:'ID Pic',p:250},{n:'Frame',p:1500},{n:'Disc Frame',p:800},{n:'4R Print',p:50},{n:'8R/A4',p:200},{n:'Styleshots Promo',p:3000},{n:'Couple Styleshots',p:4000},{n:'PopReveal',p:2500},{n:'MamaLove',p:2000},{n:'Glowing Mom',p:4500},{n:'Moments Fam',p:3000},{n:'Generations',p:4000}],
+  ot:[{n:'ID Pic',p:250},{n:'Frame',p:1500},{n:'Disc Frame',p:800},{n:'4R Print',p:50},{n:'8R/A4',p:200},{n:'Styleshots Promo',p:3000},{n:'Couple Styleshots',p:4000},{n:'PopReveal',p:2500},{n:'MamaLove',p:2000},{n:'Glowing Mom',p:5500},{n:'Moments Fam',p:3000},{n:'Generations',p:4000}],
   as:[{n:'5 mins',p:100},{n:'4R Print',p:50},{n:'Pax',p:100},{n:'Frame',p:1500},{n:'HMU',p:2000},{n:'Digital Copy',p:200},{n:'Pet',p:100},{n:'Set Design',p:700},{n:'Balloon',p:75},{n:'Theme Set Up',p:2000}],
   ap:[{n:'5 mins',p:200},{n:'Pax',p:200},{n:'Photo Edit',p:300},{n:'Rush Edit',p:300}]
 };
@@ -2320,6 +2670,7 @@ async function syncAll(){
     if(Array.isArray(d.clients))          DB.clients          =d.clients;
     if(Array.isArray(d.registrations))    DB.registrations    =d.registrations;
     if(Array.isArray(d.acknowledgements)) DB.acknowledgements =d.acknowledgements;
+    if(Array.isArray(d.bookings))         DB.bookings         =d.bookings;
     if(Array.isArray(d.transactions))     DB.transactions     =d.transactions;
     if(Array.isArray(d.eodReports))       DB.eodReports       =d.eodReports;
     if(Array.isArray(d.expenses))         DB.expenses         =d.expenses;
@@ -2744,8 +3095,9 @@ async function genEOD(){
 
   if(submitBtn){ submitBtn.disabled=false; submitBtn.textContent='📤 Submit & Email Report'; }
 
-  // Send email report
-  var toEmail = (DB.studioInfo?.eodEmail||'').trim();
+  // Send email report — defaults to clickloungestudio@gmail.com if no
+  // custom EOD email is configured in Settings
+  var toEmail = (DB.studioInfo?.eodEmail||'').trim() || 'clickloungestudio@gmail.com';
   if(toEmail && hasUrl()){
     notify('Sending EOD report to '+toEmail+'…','info');
     var emailPayload = {
@@ -2774,8 +3126,6 @@ async function genEOD(){
         else notify('EOD saved — email failed: '+(res.error||'check Apps Script'),'error');
       })
       .catch(function(e){ notify('EOD saved — email error: '+e.message,'error'); });
-  } else if(!toEmail){
-    notify('EOD saved. Set EOD Report Email in Settings to receive email reports.','info');
   }
 }
 
@@ -2816,6 +3166,15 @@ function renderCalendar(){
            ';border-radius:3px;padding:1px 4px;margin-top:2px;overflow:hidden;'+
            'text-overflow:ellipsis;white-space:nowrap;">'+escHtml(name)+'</div>';
   }
+  // Client name only (no package) — trims to a compact display
+  function firstNameLast(full){
+    return String(full||'').trim();
+  }
+  // Minutes-since-midnight from a calendar event's start (for time sorting)
+  function _evSlotMin(ev){
+    var m = String(ev.start||'').match(/T(\d{2}):(\d{2})/);
+    return m ? parseInt(m[1])*60 + parseInt(m[2]) : 9999;
+  }
 
   for(var d = 1; d <= daysInMo; d++){
     var dateStr  = yr+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
@@ -2834,45 +3193,95 @@ function renderCalendar(){
     var dayEvents = calEvents.filter(function(ev){
       return String(ev.start||'').slice(0,10) === dateStr;
     });
+
+    // Extract the client name from event titles. TWO formats exist:
+    //   Online bookings:  "[PENDING] Package — Name (2 pax)"   (package first)
+    //   Quick Book:       "[CONFIRMED] Name — Package"          (name first)
+    var _PKG_WORDS = /(styleshot|selfie|snapshot|tribe|crowd|crew|frenzy|party|click capture|candid|luxe|glowing|vip|radiant|photographer|rental|booth|event|bridal|cap and gown|kids|twogether|glam|mode|promo|session|package|mom)/i;
+    function _evClientName(ev){
+      var raw = String(ev.title||'');
+      var isPending = /\[PENDING\]/i.test(raw);
+      var t = raw.replace(/\[PENDING\]/gi,'').replace(/\[CONFIRMED\]/gi,'').trim();
+      var parts = t.split(/\s+[—–-]\s+/);
+      if(parts.length < 2){
+        return t.replace(/\s*\(.*?\)\s*$/,'').trim();
+      }
+      var p1 = parts[0].replace(/\s*\(.*?\)\s*$/,'').trim();
+      var p2 = parts.slice(1).join(' — ').replace(/\s*\(.*?\)\s*$/,'').trim();
+      var p1IsPkg = _PKG_WORDS.test(p1), p2IsPkg = _PKG_WORDS.test(p2);
+      if(p1IsPkg && !p2IsPkg) return p2;   // "Package — Name"
+      if(p2IsPkg && !p1IsPkg) return p1;   // "Name — Package"
+      // Ambiguous → decide by tag: PENDING = online format (name after dash)
+      return isPending ? p2 : p1;
+    }
+    // Is there already an ack receipt for this client on this date?
+    function _evReceipted(ev){
+      var clientName = _evClientName(ev).toLowerCase();
+      if(!clientName) return false;
+      return dayAcks.some(function(a){
+        var ackName = String(a.fbName||'').trim().toLowerCase();
+        if(!ackName) return false;
+        return ackName === clientName ||
+               ackName.includes(clientName.split(' ')[0]) && clientName.includes(ackName.split(' ')[0]);
+      });
+    }
+
+    // Dedupe events among themselves too (same client shown once even if
+    // multiple duplicate events exist on the Google Calendar)
+    var _seenEvNames = {};
+    function _evUnique(ev){
+      var key = _evClientName(ev).toLowerCase();
+      if(!key) return true;
+      if(_seenEvNames[key]) return false;
+      _seenEvNames[key] = true;
+      return true;
+    }
+
     var evPend = dayEvents.filter(function(ev){
       if(ev.status !== 'pending') return false;
-      // Exclude if an ack receipt already exists for this date with matching name
-      var evTitle    = ev.title.replace(/\[PENDING\]/gi,'').replace(/\[CONFIRMED\]/gi,'').trim();
-      var nameMatch  = evTitle.match(/—\s*(.+?)\s*[\(\|]/);
-      var clientName = (nameMatch ? nameMatch[1] : evTitle).trim().toLowerCase();
-      var receipted  = dayAcks.some(function(a){
-        var ackName = String(a.fbName||'').toLowerCase();
-        return ackName.includes(clientName.split(' ')[0]) || clientName.includes(ackName.split(' ')[0]);
-      });
-      return !receipted;
+      return !_evReceipted(ev) && _evUnique(ev);
     });
-    var evConf = dayEvents.filter(function(ev){ return ev.status==='confirmed'; });
+    var evConf = dayEvents.filter(function(ev){
+      if(ev.status !== 'confirmed') return false;
+      return !_evReceipted(ev) && _evUnique(ev);
+    });
 
     var bg = 'var(--white)';
     if(isRest)    bg = 'rgba(192,84,74,0.04)';
     if(isBlocked) bg = '#e8e8e8';
     if(isToday)   bg = 'rgba(81,137,125,0.1)';
 
-    var allCount = dayAcks.length + dayEvents.length;
+    var allCount = dayAcks.length + evPend.length + evConf.length;
     var chips = '';
     if(isBlocked) chips += '<div style="font-size:9px;color:#666;background:#ddd;border-radius:2px;padding:1px 3px;">🚫</div>';
-    // Show ack receipts
-    pend.slice(0,2).forEach(function(a){ chips += bookingChip(a.fbName,'#fff3cd','#ffc107'); });
-    conf.slice(0,2).forEach(function(a){ chips += bookingChip(a.fbName,'#d4edda','#51897d'); });
-    canc.slice(0,1).forEach(function(a){ chips += bookingChip(a.fbName,'#f8d7da','#c0544a'); });
-    // Show Google Cal events not already in acks
-    evPend.slice(0,2).forEach(function(ev){
-      var name = ev.title.replace(/\[PENDING\]/g,'').replace(/\[CONFIRMED\]/g,'').trim();
-      chips += bookingChip(name,'#fff3cd','#ffc107');
-    });
-    evConf.slice(0,1).forEach(function(ev){
-      var name = ev.title.replace(/\[PENDING\]/g,'').replace(/\[CONFIRMED\]/g,'').trim();
-      chips += bookingChip(name,'#d4edda','#51897d');
-    });
-    if(allCount > 4) chips += '<div style="font-size:9px;color:var(--muted);margin-top:2px;">+'+(allCount-4)+' more</div>';
 
-    html += '<div style="height:100%;box-sizing:border-box;background:'+bg+';border:1px solid var(--light2);'+
-            'padding:5px;cursor:pointer;overflow:hidden;" onclick="calDayClick(\''+dateStr+'\')">'+
+    // Build ONE unified list: acks + non-receipted calendar events,
+    // names only, sorted by their time slot — show ALL (no "+N more")
+    var _slotMin = function(t){
+      var m = String(t||'').match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+      if(!m) return 9999;
+      var h = parseInt(m[1]); if(/PM/i.test(m[3]) && h<12) h+=12; if(/AM/i.test(m[3]) && h===12) h=0;
+      return h*60 + parseInt(m[2]);
+    };
+    var dayItems = [];
+    dayAcks.forEach(function(a){
+      var s = String(a.status||'').toLowerCase();
+      var style = s.includes('cancel') ? ['#f8d7da','#c0544a']
+                : s.includes('confirm') ? ['#d4edda','#51897d']
+                : ['#fff3cd','#ffc107'];
+      dayItems.push({ name: firstNameLast(a.fbName), t: _slotMin(a.timeSlot||a.time), bg: style[0], bd: style[1] });
+    });
+    evPend.forEach(function(ev){
+      dayItems.push({ name: firstNameLast(_evClientName(ev)), t: _evSlotMin(ev), bg:'#fff3cd', bd:'#ffc107' });
+    });
+    evConf.forEach(function(ev){
+      dayItems.push({ name: firstNameLast(_evClientName(ev)), t: _evSlotMin(ev), bg:'#d4edda', bd:'#51897d' });
+    });
+    dayItems.sort(function(a,b){ return a.t - b.t; });
+    dayItems.forEach(function(it){ chips += bookingChip(it.name, it.bg, it.bd); });
+
+    html += '<div style="min-height:90px;height:100%;box-sizing:border-box;background:'+bg+';border:1px solid var(--light2);'+
+            'padding:5px;cursor:pointer;" onclick="calDayClick(\''+dateStr+'\')">'+
             '<div style="font-size:11px;font-weight:'+(isToday?'700':'500')+';color:'+
             (isToday?'var(--teal)':isRest?'var(--danger)':'var(--text)')+';margin-bottom:3px;">'+d+'</div>'+
             chips+'</div>';
@@ -2949,8 +3358,7 @@ function renderCalendarLists(acks, yr, mo){
       // event description as "Package: {pkg} (₱{price})" — pull the number
       // straight out of that line's parentheses. No backend change needed.
       // Downpayment is intentionally NOT auto-filled — the amount actually
-      // collected can vary per client, so staff always enters it manually
-      // when creating the receipt (original behavior, unchanged).
+      // collected can vary per client, so staff always enters it manually.
       var totalMatch = (ev.description||'').match(/Package:.*?\(\s*[₱P]?\s*([\d,]+(?:\.\d+)?)\s*\)/i);
       var evTotal = totalMatch ? totalMatch[1].replace(/,/g,'') : '';
       pendHtml += '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--light2);background:rgba(255,243,205,0.2);">'+
@@ -2964,7 +3372,9 @@ function renderCalendarLists(acks, yr, mo){
           '</div>'+
         '</div>'+
         '<div style="display:flex;gap:6px;flex-wrap:wrap;">'+
-          '<button class="btn btn-sm btn-teal" data-name="'+encodeURIComponent(clientName)+'" data-date="'+date+'" data-svc="'+encodeURIComponent(service)+'" data-email="'+encodeURIComponent(evEmail)+'" data-time="'+encodeURIComponent(evTime)+'" data-evid="'+encodeURIComponent(evId)+'" data-total="'+encodeURIComponent(evTotal)+'" onclick="openNewAckFromCalEvent(this)">+ Create Receipt</button>'+
+          '<button class="btn btn-sm btn-teal" data-name="'+encodeURIComponent(clientName)+'" data-date="'+date+'" data-svc="'+encodeURIComponent(service)+'" data-email="'+encodeURIComponent(evEmail)+'" data-time="'+encodeURIComponent(evTime)+'" data-evid="'+encodeURIComponent(evId)+'" data-total="'+encodeURIComponent(evTotal)+'" onclick="openNewAckFromCalEvent(this)">✉ Confirm & Email</button>'+
+          '<button class="btn btn-sm btn-outline" style="font-size:10px;padding:4px 8px;" data-name="'+encodeURIComponent(clientName)+'" data-date="'+date+'" data-svc="'+encodeURIComponent(service)+'" data-email="'+encodeURIComponent(evEmail)+'" data-time="'+encodeURIComponent(evTime)+'" data-evid="'+encodeURIComponent(evId)+'" data-total="'+encodeURIComponent(evTotal)+'" onclick="quickConfirmBooking(this)">⚡ Quick</button>'+
+          '<button class="btn btn-sm" style="background:var(--danger);color:#fff;font-size:10px;padding:4px 8px;" data-evid="'+encodeURIComponent(evId)+'" data-name="'+encodeURIComponent(clientName)+'" data-email="'+encodeURIComponent(evEmail)+'" data-svc="'+encodeURIComponent(service)+'" data-date="'+date+'" data-time="'+encodeURIComponent(evTime)+'" onclick="calCancelCalEvent(this)">✕ Cancel</button>'+
         '</div>'+
       '</div>';
     });
@@ -2972,7 +3382,13 @@ function renderCalendarLists(acks, yr, mo){
   }
 
   if(confEl){
-    const confHtml = confirmed.map(function(a){ return ackListRow(a,'confirmed'); }).join('');
+    // Most recently created/booked on top
+    const confSorted = confirmed.slice().sort(function(a,b){
+      // Prefer created date (a.date) desc, fall back to bookDate desc
+      var ad = String(a.date||a.bookDate||''), bd = String(b.date||b.bookDate||'');
+      return bd.localeCompare(ad);
+    });
+    const confHtml = confSorted.map(function(a){ return ackListRow(a,'confirmed'); }).join('');
     confEl.innerHTML = confHtml || '<div class="tm">No confirmed bookings this month.</div>';
   }
 }
@@ -2983,11 +3399,12 @@ function ackListRow(a, type){
     '<div style="width:8px;height:8px;border-radius:50%;background:'+(isP?'var(--gold)':'var(--success)')+';flex-shrink:0;"></div>'+
     '<div style="flex:1;">'+
       '<div style="font-weight:600;font-size:13px;">'+escHtml(a.fbName||'')+'</div>'+
-      '<div style="font-size:11px;color:var(--muted);">'+a.bookDate+' · '+escHtml(a.service||'—')+' · ₱'+fmt(+a.downpayment||0)+' '+escHtml(a.mop||'')+'</div>'+
+      '<div style="font-size:11px;color:var(--muted);">'+a.bookDate+(a.timeSlot?' · 🕐 '+escHtml(a.timeSlot):'')+' · '+escHtml(a.service||'—')+' · ₱'+fmt(+a.downpayment||0)+' '+escHtml(a.mop||'')+'</div>'+
     '</div>'+
-    '<div style="display:flex;gap:6px;">'+
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;">'+
       (isP ? '<button class="btn btn-sm btn-teal" data-aid="'+a.id+'" onclick="calConfirmAck(this)">✓ Confirm</button>' : '')+
       '<button class="btn btn-sm btn-outline" data-aid="'+a.id+'" onclick="viewAckDetail(this.dataset.aid)">View</button>'+
+      '<button class="btn btn-sm" style="background:var(--danger);color:#fff;font-size:10px;padding:4px 8px;" data-aid="'+a.id+'" onclick="calCancelAck(this)">✕ Cancel</button>'+
     '</div>'+
   '</div>';
 }
@@ -3005,18 +3422,118 @@ function calNavToday(){
   renderCalendar();
 }
 
+function _hasHMU(pkgName){
+  return /(promo styleshots|couple styleshots promo|glowing mom|vip grad glam|radiant mama|luxe mode|coat code|luxe m0de|styleshots)/i.test(pkgName||'');
+}
+
 function calDayClick(dateStr){
   var acks = (DB.acknowledgements||[]).filter(function(a){ return a.bookDate===dateStr; });
   if(!acks.length) return;
-  var html = '<h3 style="margin-bottom:12px;">📅 '+dateStr+'</h3>';
+
+  // Enrich acks with time slot from the Bookings sheet when missing.
+  // Backend transforms sheet headers to snake_case: "FB Name" → fb_name, "Time Slot" → time_slot
+  function _bookingName(b){ return b.fbName || b.fb_name || b['FB Name'] || b.name || ''; }
+  function _bookingTime(b){ return b.timeSlot || b.time_slot || b['Time Slot'] || b.time || ''; }
+
+  // Convert ANY time representation the sheet returns → clean PHT "2:00 PM" format
+  function _fmtPHT(t){
+    if(!t) return '';
+    t = String(t).trim();
+    // Already in "H:MM AM/PM" — return as-is
+    if(/AM|PM/i.test(t)) return t.replace(/\s+/g,' ');
+    // ISO string with T (Google Sheets sometimes stores time as "1899-12-30T14:00:00.000Z")
+    var iso = t.match(/T(\d{2}):(\d{2})/);
+    if(iso){ return _to12(parseInt(iso[1]), parseInt(iso[2])); }
+    // "HH:MM:SS" or "HH:MM" 24-hour
+    var hm = t.match(/^(\d{1,2}):(\d{2})/);
+    if(hm){ return _to12(parseInt(hm[1]), parseInt(hm[2])); }
+    return t;
+  }
+  function _to12(h, m){
+    var period = h >= 12 ? 'PM' : 'AM';
+    var h12 = h % 12; if(h12 === 0) h12 = 12;
+    return h12 + ':' + String(m).padStart(2,'0') + ' ' + period;
+  }
+  // Normalize any date value to YYYY-MM-DD for reliable matching
+  function _normDate(v){
+    if(!v) return '';
+    if(v instanceof Date){
+      var y=v.getFullYear(), m=String(v.getMonth()+1).padStart(2,'0'), d=String(v.getDate()).padStart(2,'0');
+      return y+'-'+m+'-'+d;
+    }
+    var s = String(v).trim();
+    var iso = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if(iso) return iso[1]+'-'+String(iso[2]).padStart(2,'0')+'-'+String(iso[3]).padStart(2,'0');
+    var us = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if(us) return us[3]+'-'+String(us[1]).padStart(2,'0')+'-'+String(us[2]).padStart(2,'0');
+    return s.slice(0,10);
+  }
+
+  var bookingsForDay = (DB.bookings||[]).filter(function(b){
+    return _normDate(b.date || b.Date || b.bookDate) === dateStr;
+  });
+
+  acks.forEach(function(a){
+    // Always normalize the ack's existing time to PHT display format
+    if(a.timeSlot) a.timeSlot = _fmtPHT(a.timeSlot);
+    if(a.time) a.time = _fmtPHT(a.time);
+
+    if(!a.timeSlot && !a.time){
+      var nameL = String(a.fbName||'').trim().toLowerCase();
+      var match = bookingsForDay.find(function(b){
+        return _bookingName(b).trim().toLowerCase() === nameL;
+      });
+      if(!match && nameL){
+        var firstName = nameL.split(/\s+/)[0];
+        match = bookingsForDay.find(function(b){
+          var bn = _bookingName(b).trim().toLowerCase();
+          return bn.indexOf(firstName) === 0 || firstName.indexOf(bn.split(/\s+/)[0]) === 0;
+        });
+      }
+      if(match){ a.timeSlot = _fmtPHT(_bookingTime(match)); }
+    }
+  });
+
+  // Sort by time slot (chronologically)
+  function _timeToMinutes(t){
+    if(!t) return 9999;
+    var m = String(t).match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+    if(!m) return 9999;
+    var h = parseInt(m[1]), min = parseInt(m[2]);
+    if(/PM/i.test(m[3]) && h < 12) h += 12;
+    if(/AM/i.test(m[3]) && h === 12) h = 0;
+    return h * 60 + min;
+  }
+  acks.sort(function(a,b){ return _timeToMinutes(a.timeSlot||a.time) - _timeToMinutes(b.timeSlot||b.time); });
+
+  var html = '<h3 style="margin-bottom:12px;">📅 '+dateStr+' <span style="font-size:12px;color:var(--muted);font-weight:400;">· '+acks.length+' booking'+(acks.length!==1?'s':'')+'</span></h3>';
+
+  // ─── HMU Alert: contact artist for any HMU packages this day ───
+  var hmuBookings = acks.filter(function(a){ return _hasHMU(a.service); });
+  if(hmuBookings.length){
+    html += '<div style="background:linear-gradient(135deg,#fff4e6,#ffe8cc);border:2px solid #d79068;border-radius:10px;padding:12px 14px;margin-bottom:12px;">'+
+      '<div style="font-size:13px;font-weight:800;color:#8b4d1f;margin-bottom:6px;">💄 HMU Artist Alert ('+hmuBookings.length+')</div>'+
+      '<div style="font-size:11px;color:#5c3717;margin-bottom:8px;">Contact your Hair &amp; Makeup artist to confirm availability for:</div>'+
+      hmuBookings.map(function(a){
+        return '<div style="font-size:11px;color:#5c3717;padding:4px 0;border-top:1px dashed rgba(139,77,31,.3);"><strong>'+escHtml(a.fbName||'')+'</strong> · '+escHtml(a.service||'')+' · '+escHtml(a.timeSlot||'—')+' <span style="color:#8b4d1f;">(arrive 1.5 hrs early)</span></div>';
+      }).join('')+
+    '</div>';
+  }
+
   acks.forEach(function(a){
     var isPending = !a.status || String(a.status||'').toLowerCase().includes('pending');
-    html += '<div style="background:var(--light);border-radius:8px;padding:12px 14px;margin-bottom:8px;">'+
-      '<div style="font-weight:600;">'+escHtml(a.fbName||'')+'</div>'+
-      '<div style="font-size:12px;color:var(--muted);margin-top:2px;">'+escHtml(a.service||'—')+' · ₱'+fmt(+a.downpayment||0)+' '+escHtml(a.mop||'')+'</div>'+
+    var isHMU = _hasHMU(a.service);
+    var timeSlot = a.timeSlot || a.time || '—';
+    html += '<div style="background:var(--light);border-radius:8px;padding:12px 14px;margin-bottom:8px;'+(isHMU?'border-left:4px solid #d79068;':'')+'">'+
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">'+
+        '<div style="font-weight:600;flex:1;">'+escHtml(a.fbName||'')+(isHMU?' <span style="font-size:9px;background:rgba(215,144,104,.2);color:#8b4d1f;padding:2px 7px;border-radius:10px;font-weight:700;vertical-align:middle;">💄 HMU</span>':'')+'</div>'+
+        '<div style="font-size:12px;font-weight:800;color:var(--teal);background:rgba(81,137,125,.1);padding:3px 10px;border-radius:6px;white-space:nowrap;">⏰ '+escHtml(timeSlot)+'</div>'+
+      '</div>'+
+      '<div style="font-size:12px;color:var(--muted);margin-top:4px;">'+escHtml(a.service||'—')+' · ₱'+fmt(+a.downpayment||0)+' '+escHtml(a.mop||'')+'</div>'+
       '<div style="font-size:11px;color:var(--muted);margin-top:2px;">Status: '+(a.status||'Pending')+'</div>'+
       '<div style="display:flex;gap:6px;margin-top:8px;">'+
         (isPending ? '<button class="btn btn-sm btn-teal" data-aid="'+a.id+'" onclick="calConfirmAck(this)">✓ Confirm</button>' : '')+
+        '<button class="btn btn-sm" style="background:var(--gold);color:#fff;" data-aid="'+a.id+'" onclick="calRescheduleAck(this)">📆 Reschedule</button>'+
         '<button class="btn btn-sm btn-outline" data-aid="'+a.id+'" onclick="calPrintAck(this)">🖨 Print</button>'+
         '<button class="btn btn-sm btn-danger" data-aid="'+a.id+'" onclick="calDeleteAck(this)">✕ Delete</button>'+
       '</div>'+
@@ -3029,6 +3546,328 @@ function calDayClick(dateStr){
 function calConfirmAck(btn){ var id=btn.dataset.aid; confirmAck(id); closeModal(); }
 function calPrintAck(btn)  { var id=btn.dataset.aid; printAck(id); }
 function calDeleteAck(btn) { var id=btn.dataset.aid; deleteAck(id); closeModal(); }
+
+// ── Auto-create a structured HMU Prep task for the Tasks Manager ──
+// Fired whenever an HMU booking is confirmed (Quick Book + calendar confirm).
+// Staff fill in the peg, edit file names, shopping list, and notes.
+// True for any package that involves a photographer session (needs prep planning).
+// Self-shoot and event/booth rentals don't need a prep task.
+function _isPhotographerPkg(svc){
+  var s = String(svc||'').toLowerCase();
+  if(_hasHMU(svc)) return true; // all HMU packages qualify
+  return /(styleshots|couple styleshots|luxe mode|coat code|pop reveal|radiant mama|candid kids|family portraits|pawtraits|grad-u-click|cap and gown|vip grad glam|bridal|photographer)/i.test(s);
+}
+
+function createHmuPrepTask(a){
+  try{
+    if(!a || !_isPhotographerPkg(a.service)) return;
+    var client = String(a.fbName||'').trim();
+    var due = dateOnly(a.bookDate);
+    // Dedupe: one prep task per client+session date
+    var exists = (DB.tasks||[]).some(function(t){
+      return String(t.type||'')==='HMU Prep' &&
+             String(t.client||'').toLowerCase()===client.toLowerCase() &&
+             String(t.due||'').slice(0,10)===due && !t.archived;
+    });
+    if(exists) return;
+
+    // Pull the client's own booking notes into the Peg / Reference section
+    var clientNote = String(a.notes||'').trim();
+    var pegBody = clientNote ? clientNote : '(paste peg links or describe the look the client wants)';
+
+    var isHMU = _hasHMU(a.service);
+    var task = {
+      id: uid(),
+      createdAt: todayStr(),
+      created: todayStr(),
+      type: 'HMU Prep',
+      title: (isHMU?'💄':'📸') + ' ' + (a.service||'Session') + ' — ' + client + ' (' + (a.timeSlot||'') + ')',
+      client: client,
+      clientEmail: a.email||'',
+      due: due,
+      dueDate: due,
+      notes:
+        '💄 HMUA ASSIGNED:\n' +
+        (isHMU ? '(name of the assigned hair & makeup artist)' : '(no HMU for this package)') + '\n\n' +
+        '📌 CLIENT PEG / REFERENCE:\n' +
+        pegBody + '\n\n' +
+        '🛒 TO BUY FOR THE SHOOT:\n' +
+        '(props, makeup items, or materials needed)\n\n' +
+        '📝 OTHER NOTES:\n' +
+        '(allergies, outfit details, arrival reminders, etc.)\n\n' +
+        '— Package: ' + (a.service||'') + ' · Session: ' + due + ' ' + (a.timeSlot||''),
+      driveLink: '',
+      stage: 'new',
+      done: '',
+      completed: '',
+      completedAt: '',
+      archived: '',
+      priority: 'high',
+      assignedTo: '',
+      updated: todayStr(),
+      updatedAt: todayStr()
+    };
+    if(!DB.tasks) DB.tasks = [];
+    DB.tasks.push(task);
+    saveLocal();
+    push('saveTask', task);
+    notify('📋 Session prep task created for ' + client + ' — open the Tasks App (Photographer Sessions) to add details','success');
+    logActivity('Task Created', 'HMU Prep — ' + client + ' (due ' + due + ')', 'info');
+  }catch(e){ console.error('createHmuPrepTask:', e); }
+}
+
+// ── Auto-create a Photo Editing task for the Tasks Manager ──
+// Fired alongside createHmuPrepTask whenever a photographer-package booking
+// is confirmed. Includes a dedicated "Photos for Editing" field the
+// photographer/editor fills in with file names or a picks list once the
+// shoot is done — separate from the general Notes field.
+function createEditingTask(a){
+  try{
+    if(!a || !_isPhotographerPkg(a.service)) return;
+    var client = String(a.fbName||'').trim();
+    var due = dateOnly(a.bookDate);
+    // Dedupe: one editing task per client+session date
+    var exists = (DB.tasks||[]).some(function(t){
+      return String(t.type||'')==='editing' &&
+             String(t.client||'').toLowerCase()===client.toLowerCase() &&
+             String(t.due||'').slice(0,10)===due && !t.archived;
+    });
+    if(exists) return;
+
+    var task = {
+      id: uid(),
+      createdAt: todayStr(),
+      created: todayStr(),
+      type: 'editing',
+      title: '🖼 ' + (a.service||'Session') + ' — ' + client + ' (' + (a.timeSlot||'') + ')',
+      client: client,
+      clientEmail: a.email||'',
+      due: due,
+      dueDate: due,
+      notes: '— Package: ' + (a.service||'') + ' · Session: ' + due + ' ' + (a.timeSlot||''),
+      photosForEditing: '',
+      driveLink: '',
+      stage: 'new',
+      done: '',
+      completed: '',
+      completedAt: '',
+      archived: '',
+      priority: 'normal',
+      assignedTo: '',
+      updated: todayStr(),
+      updatedAt: todayStr()
+    };
+    if(!DB.tasks) DB.tasks = [];
+    DB.tasks.push(task);
+    saveLocal();
+    push('saveTask', task);
+    logActivity('Task Created', 'Photo Editing — ' + client + ' (due ' + due + ')', 'info');
+  }catch(e){ console.error('createEditingTask:', e); }
+}
+
+// Backfill: create session tasks for existing photographer bookings missing one.
+function backfillPhotographerTasks(){
+  var today = todayStr();
+  var acks = (DB.acknowledgements||[]).filter(function(a){
+    var st = String(a.status||'').toLowerCase();
+    var d  = String(a.bookDate||'').slice(0,10);
+    return _isPhotographerPkg(a.service) && st !== 'cancelled' && d >= today;
+  });
+  var before = (DB.tasks||[]).filter(function(t){ return String(t.type||'')==='HMU Prep'; }).length;
+  var editBefore = (DB.tasks||[]).filter(function(t){ return String(t.type||'')==='editing'; }).length;
+  acks.forEach(function(a){ createHmuPrepTask(a); createEditingTask(a); });
+  var after = (DB.tasks||[]).filter(function(t){ return String(t.type||'')==='HMU Prep'; }).length;
+  var editAfter = (DB.tasks||[]).filter(function(t){ return String(t.type||'')==='editing'; }).length;
+  var made = after - before;
+  var editMade = editAfter - editBefore;
+  notify('📋 Backfill complete — created ' + made + ' prep task(s) and ' + editMade + ' editing task(s) from ' + acks.length + ' photographer booking(s)', 'success');
+  return { scanned: acks.length, created: made, editingCreated: editMade };
+}
+
+function calRescheduleAck(btn){
+  var id = btn.dataset.aid;
+  var a = (DB.acknowledgements||[]).find(function(x){ return x.id===id; });
+  if(!a){ notify('Booking not found','error'); return; }
+  var tomorrow = new Date(Date.now()+86400000).toISOString().slice(0,10);
+  openModal(
+    '<h3 style="margin-bottom:4px;">📆 Reschedule Booking</h3>'+
+    '<div style="font-size:12px;color:var(--muted);margin-bottom:14px;"><strong>'+escHtml(a.fbName||'')+'</strong> · '+escHtml(a.service||'')+'<br>Currently: '+escHtml(dateOnly(a.bookDate))+' · '+escHtml(a.timeSlot||'—')+'</div>'+
+    '<div class="frow c2" style="margin-bottom:12px;">'+
+      '<div class="field" style="margin:0;"><label>New Date</label>'+
+        '<input type="date" id="rs-date" class="sinput" min="'+tomorrow+'" style="width:100%;"></div>'+
+      '<div class="field" style="margin:0;"><label>New Time Slot</label>'+
+        '<select id="rs-slot" class="sinput" style="width:100%;">'+
+          ALL_TIME_SLOTS.map(function(s){ return '<option>'+s+'</option>'; }).join('')+
+        '</select></div>'+
+    '</div>'+
+    '<div id="rs-status" style="font-size:11px;color:var(--muted);margin-bottom:10px;display:none;"></div>'+
+    '<div class="fe" style="gap:8px;">'+
+      '<button class="btn btn-outline" onclick="calDayClick(\''+dateOnly(a.bookDate)+'\')">← Back</button>'+
+      '<button class="btn btn-gold" id="rs-submit" onclick="submitReschedule(\''+id+'\')">📆 Transfer Booking</button>'+
+    '</div>'
+  );
+}
+
+async function submitReschedule(id){
+  var a = (DB.acknowledgements||[]).find(function(x){ return x.id===id; });
+  if(!a) return;
+  var newDate = document.getElementById('rs-date').value;
+  var newSlot = document.getElementById('rs-slot').value;
+  if(!newDate){ notify('Pick a new date','error'); return; }
+  var oldDate = dateOnly(a.bookDate), oldSlot = a.timeSlot||'';
+  if(newDate===oldDate && newSlot===oldSlot){ notify('Same date & slot — nothing to change','error'); return; }
+
+  var btn = document.getElementById('rs-submit');
+  btn.disabled = true; btn.textContent = '⏳ Transferring…';
+  var st = document.getElementById('rs-status');
+  st.style.display=''; st.textContent='Checking availability & moving calendar event…';
+
+  try{
+    var r = hasUrl() ? await gasCall('rescheduleBooking', {
+      ackNum: a.ackNum||'', fbName: a.fbName||'', email: a.email||'',
+      service: a.service||'', currentDate: oldDate,
+      newDate: newDate, newSlot: newSlot, adminOverride: true
+    }) : {ok:true};
+
+    if(r && r.code==='SLOT_TAKEN'){
+      st.textContent='⚠ '+(r.error||'That slot is taken.');
+      st.style.color='var(--danger)';
+      btn.disabled=false; btn.textContent='📆 Transfer Booking';
+      return;
+    }
+    if(!r || !r.ok) throw new Error((r&&r.error)||'Reschedule failed');
+
+    // Update local ack
+    a.bookDate = newDate; a.timeSlot = newSlot;
+    saveLocal();
+    push('saveAcknowledgement', a);
+    logActivity('Booking Rescheduled', (a.fbName||'')+' — '+oldDate+' '+oldSlot+' → '+newDate+' '+newSlot, 'info');
+    notify('📆 '+(a.fbName||'Booking')+' moved to '+newDate+' · '+newSlot,'success');
+    closeModal();
+    renderCalendar();
+    renderAcks();
+  }catch(e){
+    st.textContent='❌ '+e.message;
+    st.style.color='var(--danger)';
+    btn.disabled=false; btn.textContent='📆 Transfer Booking';
+  }
+}
+
+// Asks which cancellation email (if any) to send. Resolves to:
+//   'nopayment'     — no downpayment received (client will be told the slot was released for non-payment)
+//   'clientrequest' — client asked to cancel (neutral "cancelled as requested" tone)
+//   null            — don't email (no email on file, or staff chose to skip)
+function promptCancelReason(name, email){
+  return new Promise(function(resolve){
+    if(!email){
+      notify('No email on file for '+name+' — they will not be notified.', 'warn');
+      resolve(null);
+      return;
+    }
+    openModal(
+      '<h3 style="margin-bottom:4px;">Notify '+escHtml(name)+'?</h3>'+
+      '<p style="font-size:12px;color:var(--muted);margin-bottom:16px;">'+escHtml(email)+'</p>'+
+      '<div style="display:flex;flex-direction:column;gap:8px;">'+
+        '<button class="btn btn-gold" id="cr-nopay">💰 No downpayment received</button>'+
+        '<button class="btn btn-teal" id="cr-client">🙋 Client requested cancellation</button>'+
+        '<button class="btn btn-outline" id="cr-skip">Skip — don\'t email</button>'+
+      '</div>'
+    );
+    setTimeout(function(){
+      document.getElementById('cr-nopay').onclick  = function(){ closeModal(); resolve('nopayment'); };
+      document.getElementById('cr-client').onclick = function(){ closeModal(); resolve('clientrequest'); };
+      document.getElementById('cr-skip').onclick   = function(){ closeModal(); resolve(null); };
+    }, 30);
+  });
+}
+
+function calCancelAck(btn){
+  var id = btn.dataset.aid;
+  if(!confirm('Cancel this booking? The client will need to rebook.')) return;
+  var ack = DB.acknowledgements.find(function(a){ return a.id === id; });
+  promptCancelReason(ack?ack.fbName:'', ack?ack.email||'':'').then(function(reason){
+    if(ack){
+      ack.status = 'Cancelled';
+      saveLocal();
+      push('saveAcknowledgement', ack);
+      if(hasUrl()) gasCall('cancelBooking', { id: id, fbName: ack.fbName, notifyClient: !!reason, cancelReason: reason||'', email: ack.email||'', package: ack.service||'', bookDate: ack.bookDate||'', timeSlot: ack.timeSlot||'' }).catch(function(){});
+    }
+    notify('Booking cancelled', 'success');
+    logActivity('Booking Cancelled', (ack?ack.ackNum:'') + ' — ' + (ack?ack.fbName:''), 'danger');
+    renderCalendar();
+  });
+}
+
+function calCancelCalEvent(btn){
+  var evId  = decodeURIComponent(btn.dataset.evid||'');
+  var name  = decodeURIComponent(btn.dataset.name||'');
+  var email = decodeURIComponent(btn.dataset.email||'');
+  var svc   = decodeURIComponent(btn.dataset.svc||'');
+  var date  = btn.dataset.date||'';
+  var time  = decodeURIComponent(btn.dataset.time||'');
+  if(!confirm('Cancel booking for '+name+'? This will remove it from Google Calendar.')) return;
+  promptCancelReason(name, email).then(function(reason){
+    if(hasUrl() && evId){
+      gasCall('cancelBooking', { eventId: evId, fbName: name, notifyClient: !!reason, cancelReason: reason||'', email: email, package: svc, bookDate: date, timeSlot: time })
+        .then(function(r){
+          var msg = r.ok ? 'Booking cancelled for '+name : 'Cancelled locally';
+          if(r.ok && reason) msg += r.emailSent ? ' — email sent' : ' — email failed to send';
+          notify(msg, r.ok?'success':'warn');
+          renderCalendar();
+        })
+        .catch(function(){ notify('Cancelled locally', 'warn'); renderCalendar(); });
+    } else {
+      notify('Booking cancelled locally', 'success');
+      renderCalendar();
+    }
+  });
+}
+
+// Quick confirm — no modal, directly calls confirmBooking with event data
+async function quickConfirmBooking(btn){
+  var name  = decodeURIComponent(btn.dataset.name||'');
+  var date  = btn.dataset.date||'';
+  var svc   = decodeURIComponent(btn.dataset.svc||'');
+  var email = decodeURIComponent(btn.dataset.email||'');
+  var time  = decodeURIComponent(btn.dataset.time||'');
+  var evId  = decodeURIComponent(btn.dataset.evid||'');
+  var total = +decodeURIComponent(btn.dataset.total||'') || 0;
+
+  if(!email){ notify('No email found — use Confirm & Email to enter it manually','error'); return; }
+  if(!confirm('Quick confirm booking for '+name+' on '+date+'?\n\nConfirmation email will be sent to: '+email)){ return; }
+
+  btn.disabled = true; btn.textContent = '...';
+  notify('Confirming...','info');
+  try{
+    var result = await gasCall('confirmBooking', {
+      eventId:evId, fbName:name, email:email, service:svc,
+      bookDate:date, timeSlot:time, mop:'GCash', downpayment:0, totalPrice:total
+    });
+    if(result.ok){
+      var ack = Object.assign({id:uid(),date:todayStr(),fbName:name,email:email,service:svc,bookDate:date,ackNum:result.ackNum||'',status:'Confirmed',timeSlot:time,totalPrice:total}, result.ack||{});
+      if(!ack.totalPrice) ack.totalPrice = total;
+      if(!DB.acknowledgements) DB.acknowledgements=[];
+      DB.acknowledgements.push(ack);
+      if(!DB.clients) DB.clients=[];
+      if(!DB.clients.find(function(c){return(c.fbName||'').toLowerCase()===name.toLowerCase();})){
+        var cl={id:uid(),fbName:name,email:email,type:'booked',added:todayStr()};
+        DB.clients.push(cl); push('saveClient',cl);
+      }
+      saveLocal();
+      notify('Booking confirmed! Email sent to '+email,'success');
+      logActivity('Quick Confirmed',(result.ackNum||'')+' — '+name,'success');
+      createHmuPrepTask(ack);
+      createEditingTask(ack);
+      renderCalendar();
+    } else {
+      notify('Failed: '+(result.error||'Unknown'),'error');
+      btn.disabled=false; btn.textContent='Quick';
+    }
+  }catch(e){
+    notify('Error: '+e.message,'error');
+    btn.disabled=false; btn.textContent='Quick';
+  }
+}
 
 function openNewAckFromCalEvent(btn){
   var name  = decodeURIComponent(btn.dataset.name||'');
@@ -3068,6 +3907,31 @@ async function confirmAck(id){
   await push('saveAcknowledgement', a);
   notify('Booking confirmed ✓','success');
   logActivity('Booking Confirmed', a.fbName+' — '+a.bookDate, 'success');
+  createHmuPrepTask(a);
+  createEditingTask(a);
+
+  // 💄 HMU: offer to block the following slot for hair & makeup time
+  var slotNow = String(a.timeSlot||'').trim();
+  if(_hasHMU(a.service) && slotNow){
+    var hIdx = ALL_TIME_SLOTS.indexOf(slotNow);
+    var hNext = (hIdx > -1 && hIdx < ALL_TIME_SLOTS.length - 1) ? ALL_TIME_SLOTS[hIdx + 1] : null;
+    if(hNext && confirm('💄 HMU package confirmed at ' + slotNow + '.\n\nBlock the NEXT slot (' + hNext + ') too, so the session has extra time for hair & makeup?')){
+      if(hasUrl()){
+        gasCall('createBlock', {
+          date: dateOnly(a.bookDate),
+          timeSlot: hNext,
+          reason: 'HMU extension — ' + (a.fbName||'')
+        }).then(function(br){
+          if(br && br.ok) notify('🚫 ' + hNext + ' blocked for HMU prep', 'success');
+        }).catch(function(){});
+      }
+      var hBlocks = loadBlocked();
+      hBlocks.push({ id: uid(), date: dateOnly(a.bookDate), fullDay: false, slots: [hNext], reason: 'HMU extension — ' + (a.fbName||''), addedAt: todayStr() });
+      saveBlocked(hBlocks);
+      renderBlockedList();
+    }
+  }
+
   renderCalendar();
   renderAcks();
 }
@@ -3185,7 +4049,7 @@ function showPage(pg){
     registration: ()=>{ renderReg(); initRegReportMonths(); renderRegReport(); },
     acknowledgement: renderAcks,
     invoice:      renderInvoicePage,
-    clients:      renderClients,
+    clients:      renderClientsHub,
     transactions: ()=>{ if(hasUrl()&&(!DB.transactions||!DB.transactions.length)){ syncAll().then(()=>{ renderTxns(); showTxTab('inv'); }); } else { renderTxns(); showTxTab('inv'); } },
     expenses:     renderExpensesPage,
     gifts:        ()=>{ syncAll().then(renderGiftsPage); },
@@ -4278,6 +5142,8 @@ async function saveAck(){
 
         saveLocal();
         notify('✓ Booking confirmed! Email with T&C sent to '+email,'success');
+        createHmuPrepTask(ack);
+        createEditingTask(ack);
         closeModal();
         renderAcks();
         if(document.getElementById('page-calendar')?.classList.contains('active')) renderCalendar();
@@ -4333,7 +5199,22 @@ function toggleAckSort(){
 function getHiddenAcks(){ try{ return JSON.parse(localStorage.getItem('cl_hidden_acks')||'[]'); }catch(e){ return []; } }
 function setHiddenAcks(arr){ localStorage.setItem('cl_hidden_acks', JSON.stringify(arr)); }
 function toggleHideAck(id){ const hidden=getHiddenAcks(); const idx=hidden.indexOf(id); if(idx>=0) hidden.splice(idx,1); else hidden.push(id); setHiddenAcks(hidden); renderAcks(); }
-function deleteAck(id){ if(!confirm('Permanently delete this acknowledgement receipt?')) return; DB.acknowledgements=DB.acknowledgements.filter(a=>a.id!==id); saveLocal(); push('deleteRow',{sheet:'Acknowledgements',id}); renderAcks(); notify('Receipt deleted','success'); }
+function deleteAck(id){
+  if(!confirm('Permanently delete this acknowledgement receipt?')) return;
+  // Grab the ack BEFORE removing so we can free its calendar slot
+  var ack = (DB.acknowledgements||[]).find(function(a){ return a.id===id; }) || {};
+  DB.acknowledgements=DB.acknowledgements.filter(a=>a.id!==id);
+  saveLocal();
+  push('deleteRow',{sheet:'Acknowledgements',id});
+  // Free the slot: delete matching calendar event + mark Bookings row cancelled.
+  // Passing timeSlot means a client's OTHER bookings on the same day stay intact.
+  if(hasUrl() && ack.fbName && ack.bookDate){
+    gasCall('freeBookingSlot',{ fbName:ack.fbName, bookDate:dateOnly(ack.bookDate), timeSlot: String(ack.timeSlot||'').trim() })
+      .then(function(r){ if(r&&r.ok&&r.removed) notify('🗓 Freed '+r.removed+' calendar event(s) — slot is open again','success'); })
+      .catch(function(){});
+  }
+  renderAcks(); notify('Receipt deleted','success');
+}
 function renderAcks(){
   const el     = document.getElementById('ack-list');
   if(!el) return;
@@ -4939,9 +5820,14 @@ async function promptEmail(txnId) {
   const t = DB.transactions.find(x => x.id === txnId);
   if (!t) { printInvoice(txnId); return; }
 
-  // Find client email
-  const reg = DB.registrations.find(r => r.fbName === t.clientName);
-  const email = reg ? reg.email : '';
+  // Find client email — case-insensitive search across ALL sources
+  const nameL = (t.clientName||'').toLowerCase().trim();
+  const reg = DB.registrations.find(r => (r.fbName||'').toLowerCase().trim() === nameL);
+  const cl  = DB.clients.find(c => (c.fbName||'').toLowerCase().trim() === nameL);
+  // Also check acknowledgements (booking may have captured email)
+  const ack = (DB.acknowledgements||[]).find(a => (a.fbName||'').toLowerCase().trim() === nameL);
+  // Check transaction itself (some flows store email directly)
+  const email = t.email || (reg && reg.email) || (cl && cl.email) || (ack && ack.email) || '';
 
   openModal(`
     <h3>Invoice Saved ✓</h3>
@@ -4972,13 +5858,49 @@ async function sendEmailNow(txnId) {
   const t = DB.transactions.find(x => x.id === txnId);
   if (!t) return;
   const email = document.getElementById('email-to').value.trim();
-  // Save email back to registration and client records if it was entered here
+  // Always capture & save the email to both registration and client records
+  // (so future invoices/CRM/email-center automatically find it)
   if (email) {
-    const reg = DB.registrations.find(r => r.fbName === t.clientName);
-    if (reg && !reg.email) { reg.email = email; push('saveRegistration', reg); }
-    const cl = DB.clients.find(c => c.fbName === t.clientName);
-    if (cl && !cl.email) { cl.email = email; push('saveClient', cl); }
+    let regUpdated = false, clUpdated = false;
+    const nameL = (t.clientName||'').toLowerCase().trim();
+    let reg = DB.registrations.find(r => (r.fbName||'').toLowerCase().trim() === nameL);
+    if (reg) {
+      if (reg.email !== email) { reg.email = email; regUpdated = true; }
+    } else {
+      // No registration row yet — create one so the email is captured
+      reg = {
+        id: 'reg_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+        date: t.date,
+        fbName: t.clientName,
+        email: email,
+        package: (t.items && t.items[0]) ? t.items[0].name : '',
+        source: 'Invoice email capture',
+        notes: 'Auto-created from invoice ' + t.invoiceNum
+      };
+      DB.registrations.push(reg);
+      regUpdated = true;
+    }
+    if (regUpdated) push('saveRegistration', reg);
+
+    let cl = DB.clients.find(c => (c.fbName||'').toLowerCase().trim() === nameL);
+    if (cl) {
+      if (cl.email !== email) { cl.email = email; clUpdated = true; }
+    } else {
+      // No client row yet — create one too
+      cl = {
+        id: 'cl_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+        fbName: t.clientName,
+        email: email,
+        added: t.date,
+        notes: 'Auto-created from invoice ' + t.invoiceNum
+      };
+      DB.clients.push(cl);
+      clUpdated = true;
+    }
+    if (clUpdated) push('saveClient', cl);
+
     saveLocal();
+    if (regUpdated || clUpdated) logActivity('Email captured', t.clientName + ' → ' + email, 'success');
   }
   const status = document.getElementById('email-status');
   if (!email) { status.style.display=''; status.style.color='var(--danger)'; status.textContent='Please enter a valid email address.'; return; }
@@ -5686,23 +6608,67 @@ function deleteFT(id){
   notify('Transfer deleted','info');
 }
 
+function toggleExpRecurFields(){
+  var on = document.getElementById('exp-recurring')?.checked;
+  var box = document.getElementById('exp-recur-fields');
+  if(box) box.style.display = on ? '' : 'none';
+}
+
+function addMonthsToDate(dateStr, months){
+  var d = new Date(dateStr+'T00:00:00');
+  d.setMonth(d.getMonth()+months);
+  return d.toISOString().slice(0,10);
+}
+
 function saveExpensePage(){
   var desc     = (document.getElementById('exp-desc')?.value||'').trim();
   var amt      = parseFloat(document.getElementById('exp-amt')?.value)||0;
   var mop      = document.getElementById('exp-mop')?.value||'Cash';
   var category = document.getElementById('exp-category')?.value||'Operations';
   var notes    = (document.getElementById('exp-notes-page')?.value||'').trim();
+  var isRecurring   = document.getElementById('exp-recurring')?.checked;
+  var recurInterval = document.getElementById('exp-recur-interval')?.value||'month';
+  var recurCount    = parseInt(document.getElementById('exp-recur-count')?.value)||0;
   if(!desc){ notify('Enter a description','error'); return; }
-  if(!amt)  { notify('Enter an amount','error'); return; }
-  var exp = {id:uid(), date:todayStr(), desc:desc, amt:amt, mop:mop, category:category, notes:notes};
+  // LOOPHOLE FIX: negative or zero amounts are rejected — a negative "expense"
+  // would inflate net income and could be used to offset a pocketed amount.
+  if(!amt || amt <= 0){ notify('Amount must be greater than zero','error'); return; }
+  if(amt > 1000000){ notify('Amount looks too large — double-check','error'); return; }
+  if(isRecurring && recurCount <= 0){ notify('Enter how many times this expense should recur','error'); return; }
+
+  // LOOPHOLE FIX: double-click guard — prevent duplicate expense entries
+  var saveBtn = document.getElementById('exp-save-btn');
+  if(saveBtn){
+    if(saveBtn.disabled) return; // already saving
+    saveBtn.disabled = true;
+    setTimeout(function(){ saveBtn.disabled = false; }, 1500);
+  }
+
   if(!DB.expenses) DB.expenses=[];
+  var today = todayStr();
+  var exp = {id:uid(), date:today, desc:desc, amt:amt, mop:mop, category:category, notes:notes};
   DB.expenses.push(exp);
-  saveLocal();
   push('saveExpense', exp);
-  logActivity('Expense Logged', desc+' \u2014 \u20b1'+fmt(amt)+' ('+mop+')', 'info');
-  notify('Expense saved','success');
+
+  var createdCount = 1;
+  if(isRecurring && recurCount > 0){
+    for(var i=1; i<=recurCount; i++){
+      var futureDate = recurInterval==='week' ? addDays(today, 7*i) : addMonthsToDate(today, i);
+      var futureExp = {id:uid(), date:futureDate, desc:desc, amt:amt, mop:mop, category:category,
+        notes:(notes?notes+' ':'')+'(recurring occurrence '+(i+1)+' of '+(recurCount+1)+')'};
+      DB.expenses.push(futureExp);
+      push('saveExpense', futureExp);
+      createdCount++;
+    }
+  }
+
+  saveLocal();
+  logActivity('Expense Logged', desc+' \u2014 \u20b1'+fmt(amt)+' ('+mop+')'+(createdCount>1?' + '+(createdCount-1)+' recurring':''), 'info');
+  notify(createdCount>1 ? 'Expense saved with '+(createdCount-1)+' future recurrence(s)' : 'Expense saved','success');
   var clr = function(id){ var e=document.getElementById(id); if(e) e.value=''; };
-  clr('exp-desc'); clr('exp-amt'); clr('exp-notes-page');
+  clr('exp-desc'); clr('exp-amt'); clr('exp-notes-page'); clr('exp-recur-count');
+  var recurBox = document.getElementById('exp-recurring');
+  if(recurBox){ recurBox.checked = false; toggleExpRecurFields(); }
   renderExpensesPage();
 }
 
@@ -5754,48 +6720,171 @@ function renderExpensesPage(){
     }
   }
 
-  // ── This month breakdown by category ──
-  var monthExp = allExp.filter(function(e){ return String(e.date||'').startsWith(month); });
-  var monthEl  = document.getElementById('exp-page-month');
-  if(monthEl){
-    if(!monthExp.length){
-      monthEl.innerHTML='<div class="tm">No expenses this month yet.</div>';
-    } else {
-      var monthTotal = monthExp.reduce(function(s,e){ return s+(+e.amt||0); },0);
+  // ── Expense Report (month selector + full breakdown) ──
+  _expPopulateMonths();
+  renderExpenseReport();
+}
 
-      // Group by category
-      var byCat = {};
-      monthExp.forEach(function(e){
-        var cat = e.category||'Operations';
-        if(!byCat[cat]) byCat[cat]=0;
-        byCat[cat]+=(+e.amt||0);
-      });
-      var cats = Object.entries(byCat).sort(function(a,b){ return b[1]-a[1]; });
-      var maxAmt = cats[0]?cats[0][1]:1;
+// Populate month dropdown from expense data (newest first, always includes current month)
+function _expPopulateMonths(){
+  var sel = document.getElementById('exp-rep-month');
+  if(!sel) return;
+  var cur = sel.value;
+  var months = {};
+  months[todayStr().slice(0,7)] = true;
+  (DB.expenses||[]).forEach(function(e){
+    var m = String(e.date||'').slice(0,7);
+    if(/^\d{4}-\d{2}$/.test(m)) months[m] = true;
+  });
+  var keys = Object.keys(months).sort().reverse();
+  sel.innerHTML = keys.map(function(m){
+    var d = new Date(m+'-01T00:00:00');
+    var lbl = d.toLocaleDateString('en-PH',{month:'long',year:'numeric'});
+    return '<option value="'+m+'">'+lbl+'</option>';
+  }).join('');
+  if(cur && keys.indexOf(cur)>-1) sel.value = cur;
+}
 
-      var html = '<div style="margin-bottom:12px;">';
-      cats.forEach(function(pair){
-        var cat=pair[0], amt=pair[1];
-        var pct = Math.round(amt/maxAmt*100);
-        html += '<div class="chart-bar-row">'+
-          '<div class="chart-bar-label" style="min-width:110px;font-size:12px;">'+escHtml(cat)+'</div>'+
-          '<div class="chart-bar-track"><div class="chart-bar-fill" style="width:'+pct+'%;background:var(--danger);"></div></div>'+
-          '<div class="chart-bar-val" style="color:var(--danger);">₱'+fmt(amt)+'</div>'+
-        '</div>';
-      });
-      html += '</div>';
-      html += '<div style="font-size:12px;font-weight:700;color:var(--danger);border-top:2px solid var(--border);padding-top:8px;">Month Total: ₱'+fmt(monthTotal)+'</div>';
-      monthEl.innerHTML = html;
-    }
+function renderExpenseReport(){
+  var box = document.getElementById('exp-report');
+  var sel = document.getElementById('exp-rep-month');
+  if(!box || !sel) return;
+  var month = sel.value || todayStr().slice(0,7);
+
+  var monthExp = (DB.expenses||[]).filter(function(e){ return String(e.date||'').startsWith(month); })
+    .sort(function(a,b){ return String(b.date).localeCompare(String(a.date)); });
+
+  if(!monthExp.length){
+    box.innerHTML = '<div class="tm">No expenses recorded for this month.</div>';
+    return;
   }
+
+  var total = monthExp.reduce(function(s,e){ return s+(+e.amt||0); },0);
+
+  // Days elapsed in this month (for avg/day)
+  var isCurrent = month === todayStr().slice(0,7);
+  var daysElapsed = isCurrent ? parseInt(todayStr().slice(8,10))
+    : new Date(parseInt(month.slice(0,4)), parseInt(month.slice(5,7)), 0).getDate();
+  var avgDay = daysElapsed > 0 ? Math.round(total/daysElapsed) : 0;
+
+  // Group by category + MOP
+  var byCat = {}, byMop = {};
+  monthExp.forEach(function(e){
+    var cat = e.category||'Operations';
+    var mop = e.mop||'Cash';
+    byCat[cat] = (byCat[cat]||0) + (+e.amt||0);
+    byMop[mop] = (byMop[mop]||0) + (+e.amt||0);
+  });
+  var cats = Object.entries(byCat).sort(function(a,b){ return b[1]-a[1]; });
+  var mops = Object.entries(byMop).sort(function(a,b){ return b[1]-a[1]; });
+  var maxCat = cats[0] ? cats[0][1] : 1;
+
+  // ── Summary stats row ──
+  var html = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;">'+
+    _expStat('Total', '₱'+fmt(total), 'var(--danger)')+
+    _expStat('Entries', monthExp.length, 'var(--slate)')+
+    _expStat('Avg / day', '₱'+fmt(avgDay), 'var(--slate)')+
+    _expStat('Top category', cats[0][0], 'var(--gold)')+
+  '</div>';
+
+  // ── Category breakdown bars ──
+  html += '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:6px;">By Category</div>';
+  cats.forEach(function(pair){
+    var pct = Math.round(pair[1]/maxCat*100);
+    var share = Math.round(pair[1]/total*100);
+    html += '<div class="chart-bar-row">'+
+      '<div class="chart-bar-label" style="min-width:100px;font-size:11px;">'+escHtml(pair[0])+'</div>'+
+      '<div class="chart-bar-track"><div class="chart-bar-fill" style="width:'+pct+'%;background:var(--danger);"></div></div>'+
+      '<div class="chart-bar-val" style="color:var(--danger);">₱'+fmt(pair[1])+' <span style="color:var(--muted);font-weight:400;">('+share+'%)</span></div>'+
+    '</div>';
+  });
+
+  // ── MOP split pills ──
+  html += '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin:12px 0 6px;">By Payment Mode</div>';
+  html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">';
+  mops.forEach(function(pair){
+    html += '<span style="font-size:11px;background:var(--light);border:1px solid var(--border);border-radius:10px;padding:4px 10px;">'+escHtml(pair[0])+' <strong style="color:var(--danger);">₱'+fmt(pair[1])+'</strong></span>';
+  });
+  html += '</div>';
+
+  // ── Itemized table ──
+  html += '<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:6px;">All Entries</div>';
+  html += '<div style="overflow-x:auto;max-height:320px;overflow-y:auto;"><table style="width:100%;border-collapse:collapse;font-size:11px;">';
+  html += '<thead><tr style="background:var(--slate);color:var(--cream);position:sticky;top:0;">'+
+    '<th style="padding:5px 7px;text-align:left;">Date</th>'+
+    '<th style="padding:5px 7px;text-align:left;">Description</th>'+
+    '<th style="padding:5px 7px;text-align:left;">Category</th>'+
+    '<th style="padding:5px 7px;">MOP</th>'+
+    '<th style="padding:5px 7px;text-align:left;">Staff</th>'+
+    '<th style="padding:5px 7px;text-align:right;">Amount</th>'+
+    '</tr></thead><tbody>';
+  monthExp.forEach(function(e,i){
+    html += '<tr style="background:'+(i%2===0?'var(--white)':'var(--light)')+';">'+
+      '<td style="padding:5px 7px;white-space:nowrap;">'+String(e.date||'').slice(5,10)+'</td>'+
+      '<td style="padding:5px 7px;">'+escHtml(e.desc||'')+'</td>'+
+      '<td style="padding:5px 7px;"><span style="font-size:9px;background:var(--light2);border-radius:8px;padding:1px 6px;">'+escHtml(e.category||'Operations')+'</span></td>'+
+      '<td style="padding:5px 7px;font-size:10px;color:var(--muted);">'+escHtml(e.mop||'—')+'</td>'+
+      '<td style="padding:5px 7px;font-size:10px;color:var(--muted);">'+escHtml(e.staff||'—')+'</td>'+
+      '<td style="padding:5px 7px;text-align:right;color:var(--danger);font-weight:600;white-space:nowrap;">₱'+fmt(+e.amt)+'</td>'+
+    '</tr>';
+  });
+  html += '<tr style="background:var(--light);font-weight:700;border-top:2px solid var(--border);">'+
+    '<td colspan="5" style="padding:6px 7px;">Month Total</td>'+
+    '<td style="padding:6px 7px;text-align:right;color:var(--danger);">₱'+fmt(total)+'</td></tr>';
+  html += '</tbody></table></div>';
+
+  box.innerHTML = html;
+}
+
+function _expStat(lbl, val, color){
+  return '<div style="background:var(--light);border-radius:8px;padding:8px 10px;text-align:center;">'+
+    '<div style="font-size:15px;font-weight:800;color:'+color+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+val+'</div>'+
+    '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-top:2px;">'+lbl+'</div>'+
+  '</div>';
+}
+
+function exportExpenseCSV(){
+  var sel = document.getElementById('exp-rep-month');
+  var month = (sel && sel.value) || todayStr().slice(0,7);
+  var rows = (DB.expenses||[]).filter(function(e){ return String(e.date||'').startsWith(month); })
+    .sort(function(a,b){ return String(a.date).localeCompare(String(b.date)); });
+  if(!rows.length){ notify('No expenses to export for this month','error'); return; }
+  var esc = function(v){ v = String(v==null?'':v); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; };
+  var csv = 'Date,Description,Category,MOP,Staff,Notes,Amount\n' + rows.map(function(e){
+    return [e.date, e.desc, e.category||'Operations', e.mop||'', e.staff||'', e.notes||'', (+e.amt||0)].map(esc).join(',');
+  }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'CLS-Expenses-'+month+'.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  notify('⬇ Exported '+rows.length+' expenses','success');
 }
 
 function deleteExpense(id){
-  if(!confirm('Delete this expense?')) return;
+  // LOOPHOLE FIX: deleting expenses is admin-only — staff could otherwise
+  // hide a cash expense after pocketing the money (EOD would still balance
+  // on the day, and the record would quietly vanish).
+  if(!IS_ADMIN){
+    var pin = prompt('🔒 Deleting an expense requires the Admin PIN:');
+    if(pin === null) return;
+    if(String(pin).trim() !== String((DB.settings&&DB.settings.adminPin)||'5678').trim()){
+      notify('Wrong admin PIN — expense NOT deleted','error');
+      logActivity('Expense Delete BLOCKED', 'Failed PIN attempt by '+(CURR_USER||'unknown'), 'error');
+      return;
+    }
+  }
+  if(!confirm('Delete this expense? This also removes it from Google Sheets.')) return;
+  var exp = (DB.expenses||[]).find(function(e){ return e.id===id; }) || {};
   DB.expenses = (DB.expenses||[]).filter(function(e){ return e.id!==id; });
   saveLocal();
+  // LOOPHOLE FIX: also delete from the backend sheet — previously the row
+  // stayed in Google Sheets and re-appeared after every sync.
+  push('deleteRow', {sheet:'Expenses', id:id});
+  logActivity('Expense Deleted', (exp.desc||'')+' — ₱'+fmt(+exp.amt||0)+' (by '+(CURR_USER||'Admin')+')', 'error');
   renderExpensesPage();
-  notify('Expense deleted','info');
+  notify('Expense deleted (synced)','info');
 }
 
 // ================================================================
@@ -5821,6 +6910,166 @@ function renderSettings(){
 
 // ================================================================
 //  RENDER CLIENTS
+// ================================================================
+
+// ════════════════════════════════════════════════════════════════
+//  RENDER CLIENTS HUB — KPI summary + CRM link page
+// ════════════════════════════════════════════════════════════════
+function renderClientsHub(){
+  var clients = DB.clients || [];
+  var regs    = DB.registrations || [];
+  var txns    = (DB.transactions || []).filter(function(t){ return !String(t.invoiceNum||'').startsWith('[VOID]'); });
+  var acks    = DB.acknowledgements || [];
+
+  var now = new Date();
+  var curMonth = now.getMonth() + 1;
+  var curYear  = now.getFullYear();
+  var cutoff60 = new Date(); cutoff60.setDate(cutoff60.getDate() - 60);
+  var cutoff60Str = cutoff60.toISOString().slice(0, 10);
+  var thisMonthStr = curYear + '-' + String(curMonth).padStart(2, '0');
+
+  // Build merged client list (clients + walk-ins from regs/txns/acks)
+  var known = {};
+  clients.forEach(function(c){ known[(c.fbName||'').toLowerCase().trim()] = c; });
+  regs.forEach(function(r){
+    var n = (r.fbName||'').toLowerCase().trim();
+    if(n && !known[n]) known[n] = { fbName: r.fbName, email: r.email||'', added: r.date||'', _walkin: true };
+  });
+  txns.forEach(function(t){
+    var n = (t.clientName||'').toLowerCase().trim();
+    if(n && !known[n]) known[n] = { fbName: t.clientName, email: '', added: t.date||'', _walkin: true };
+  });
+  acks.forEach(function(a){
+    var n = (a.fbName||'').toLowerCase().trim();
+    if(n && !known[n]) known[n] = { fbName: a.fbName, email: a.email||'', added: a.date||a.bookDate||'', _booked: true };
+  });
+  var allClients = Object.values(known);
+
+  // Per-client lookup: visits, spent, last visit
+  var visitCnt = {}, txnSpent = {}, lastVisit = {};
+  regs.forEach(function(r){
+    var n = (r.fbName||'').toLowerCase();
+    visitCnt[n] = (visitCnt[n]||0) + 1;
+    if(!lastVisit[n] || r.date > lastVisit[n]) lastVisit[n] = r.date;
+  });
+  txns.forEach(function(t){
+    var n = (t.clientName||'').toLowerCase();
+    txnSpent[n] = (txnSpent[n]||0) + (parseFloat(t.total)||0);
+  });
+
+  // KPIs
+  var total = allClients.length;
+  var withEmail = allClients.filter(function(c){ return c.email && c.email.indexOf('@')>-1; }).length;
+  var active = allClients.filter(function(c){
+    var n = (c.fbName||'').toLowerCase();
+    return lastVisit[n] && lastVisit[n] >= cutoff60Str;
+  }).length;
+  var vip = allClients.filter(function(c){
+    var n = (c.fbName||'').toLowerCase();
+    return (visitCnt[n]||0) >= 5 || (txnSpent[n]||0) >= 10000;
+  }).length;
+  var newThisMonth = allClients.filter(function(c){
+    return String(c.added||'').startsWith(thisMonthStr);
+  }).length;
+  var bdayThisMonth = clients.filter(function(c){
+    if(!c.birthday) return false;
+    var bd = new Date(c.birthday);
+    if(isNaN(bd.getTime())) return false;
+    return (bd.getMonth()+1) === curMonth;
+  }).length;
+
+  // Tier distribution (Bronze/Silver/Gold/New)
+  var tiers = { 'VIP': 0, 'Gold': 0, 'Silver': 0, 'Bronze': 0, 'New': 0 };
+  allClients.forEach(function(c){
+    var n = (c.fbName||'').toLowerCase();
+    var spent = txnSpent[n] || 0;
+    var sessions = visitCnt[n] || 0;
+    var basePts = Math.floor(spent / 100);
+    var pts = Math.max(parseInt(c.points)||0, basePts);
+    var hasSession = sessions > 0;
+    var tier;
+    if(!hasSession && !c._booked) tier = 'New';
+    else if(pts >= 300) tier = 'VIP';
+    else if(pts >= 150) tier = 'Gold';
+    else if(pts >= 50) tier = 'Silver';
+    else tier = 'Bronze';
+    tiers[tier]++;
+  });
+
+  // Attention needed: missing email/phone, at risk, no socialConsent
+  var attentionItems = [];
+  var noEmail = clients.filter(function(c){ return !c.email; }).length;
+  var noPhone = clients.filter(function(c){ return !c.phone; }).length;
+  var atRisk = allClients.filter(function(c){
+    var n = (c.fbName||'').toLowerCase();
+    return lastVisit[n] && lastVisit[n] < cutoff60Str;
+  }).length;
+  if(noEmail) attentionItems.push({ icon:'📧', label:noEmail+' missing email', color:'var(--danger)' });
+  if(noPhone) attentionItems.push({ icon:'📞', label:noPhone+' missing phone', color:'var(--danger)' });
+  if(atRisk)  attentionItems.push({ icon:'⚠', label:atRisk+' at-risk clients (60d+)', color:'var(--gold)' });
+  if(bdayThisMonth) attentionItems.push({ icon:'🎂', label:bdayThisMonth+' birthdays this month', color:'#d79068' });
+
+  // Recently added (last 5)
+  var recent = allClients.slice().sort(function(a,b){ return String(b.added||'').localeCompare(String(a.added||'')); }).slice(0, 5);
+
+  // ─── Populate KPI cards ───
+  var el;
+  if(el=document.getElementById('cl-kpi-total'))  el.textContent = total;
+  if(el=document.getElementById('cl-kpi-active')) el.textContent = active;
+  if(el=document.getElementById('cl-kpi-vip'))    el.textContent = vip;
+  if(el=document.getElementById('cl-kpi-new'))    el.textContent = newThisMonth;
+  if(el=document.getElementById('cl-kpi-email'))  el.textContent = withEmail;
+  if(el=document.getElementById('cl-kpi-bday'))   el.textContent = bdayThisMonth;
+  if(el=document.getElementById('cl-kpi-email-sub')) el.textContent = total ? Math.round(withEmail/total*100)+'% reachable' : 'have email on file';
+
+  // ─── Tier chart ───
+  var tierEl = document.getElementById('cl-tier-chart');
+  if(tierEl){
+    var tierOrder = ['VIP','Gold','Silver','Bronze','New'];
+    var tierColors = { 'VIP':'#4a9082', 'Gold':'#b8860b', 'Silver':'#5b63d9', 'Bronze':'#d79068', 'New':'#9aabab' };
+    tierEl.innerHTML = tierOrder.map(function(t){
+      var count = tiers[t];
+      var pct = total ? Math.round(count/total*100) : 0;
+      return '<div class="cl-tier-row">' +
+        '<div class="cl-tier-head"><span class="name" style="color:'+tierColors[t]+';">'+t+'</span><span class="stat">'+count+' · '+pct+'%</span></div>' +
+        '<div class="cl-tier-bar"><div class="cl-tier-bar-fill" style="background:'+tierColors[t]+';width:'+pct+'%;"></div></div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // ─── Attention needed ───
+  var attEl = document.getElementById('cl-attention');
+  if(attEl){
+    if(attentionItems.length){
+      attEl.innerHTML = attentionItems.map(function(item){
+        return '<div class="cl-att-row">' +
+          '<div class="cl-att-text"><span class="cl-att-icon">'+item.icon+'</span><span>'+item.label+'</span></div>' +
+          '<a href="https://hellotalentff-max.github.io/clicklounge-clickcard/" target="_blank" class="cl-att-link" style="color:'+item.color+';">Open CRM →</a>' +
+        '</div>';
+      }).join('');
+    } else {
+      attEl.innerHTML = '<div class="cl-att-empty">✓ All clear — no immediate issues</div>';
+    }
+  }
+
+  // ─── Recently added ───
+  var recEl = document.getElementById('cl-recent');
+  if(recEl){
+    if(recent.length){
+      recEl.innerHTML = recent.map(function(c){
+        return '<div class="cl-recent-row">' +
+          '<div><div class="cl-recent-name">'+(c.fbName||'(no name)')+'</div>'+(c.email?'<div class="cl-recent-email">'+c.email+'</div>':'')+'</div>' +
+          '<div class="cl-recent-date">'+(c.added||'—')+'</div>' +
+        '</div>';
+      }).join('');
+    } else {
+      recEl.innerHTML = '<div style="font-size:12px;color:var(--muted);text-align:center;padding:14px 0;">No clients yet.</div>';
+    }
+  }
+}
+
+// ================================================================
+//  LEGACY: RENDER CLIENTS (kept for reference / other callers)
 // ================================================================
 function renderClients(){
   const q      = (document.getElementById('cl-search')?.value||'').toLowerCase();
@@ -6590,6 +7839,245 @@ async function sendCampaign(){
 let REP_MODE = 'single';
 let CUR_REP_CAT = 'financial';
 
+// ════════════════════════════════════════
+//  BOOKINGS REPORT
+// ════════════════════════════════════════
+function renderBookingsReport(){
+  var pp = getRepPrefixes();
+  var prefixes = pp.prefixes;
+  if(!prefixes.length) return;
+
+  // Merge data from BOTH Acknowledgements AND Bookings sheets
+  // Acknowledgements = POS quick book + confirmed bookings
+  // Bookings = online booking form submissions
+  var allBookings = [];
+
+  // From acknowledgements
+  (DB.acknowledgements||[]).forEach(function(a){
+    var d = dateOnly(a.bookDate || a.date || '');
+    if(!d) return;
+    if(prefixes.indexOf(d.slice(0,7)) === -1) return;
+    allBookings.push({
+      date: d,
+      timeSlot: a.timeSlot || a['Time Slot'] || '',
+      fbName: a.fbName || '',
+      service: a.service || '',
+      status: a.status || 'Confirmed',
+      downpayment: parseFloat(a.downpayment||a.totalPrice)||0,
+      source: 'POS'
+    });
+  });
+
+  // From online bookings
+  (DB.bookings||[]).forEach(function(b){
+    var d = dateOnly(b.date || b.Date || b.bookDate || '');
+    if(!d) return;
+    if(prefixes.indexOf(d.slice(0,7)) === -1) return;
+    allBookings.push({
+      date: d,
+      timeSlot: b.timeSlot || b['Time Slot'] || b.time || '',
+      fbName: b.fbName || b['FB Name'] || b.name || '',
+      service: b.service || b.package || b.Package || '',
+      status: b.status || b.Status || 'Submitted',
+      downpayment: parseFloat(b.price||b.Price||b.downpayment)||0,
+      submitted: b.submitted || b.Submitted || '',
+      source: 'Online'
+    });
+  });
+
+  var acks = allBookings;
+
+  var confirmed = acks.filter(function(a){ return (a.status||'').toLowerCase() === 'confirmed'; });
+  var pending   = acks.filter(function(a){ var s=(a.status||'').toLowerCase(); return s==='pending'||s==='pending payment'; });
+  var cancelled = acks.filter(function(a){ return (a.status||'').toLowerCase() === 'cancelled'; });
+
+  // KPI cards
+  setText('bk-total',     acks.length);
+  setText('bk-confirmed', confirmed.length);
+  setText('bk-pending',   pending.length);
+  setText('bk-cancelled', cancelled.length);
+
+  var totalRev = confirmed.reduce(function(s,a){ return s + (parseFloat(a.downpayment||a.totalPrice)||0); }, 0);
+  var avgDp = confirmed.length > 0 ? totalRev / confirmed.length : 0;
+  setText('bk-revenue',  '₱' + Math.round(totalRev).toLocaleString());
+  setText('bk-avg-dp',   '₱' + Math.round(avgDp).toLocaleString());
+
+  // Timeslot breakdown
+  var slotMap = {};
+  ALL_TIME_SLOTS.forEach(function(s){ slotMap[s] = 0; });
+  acks.forEach(function(a){
+    var slot = a.timeSlot || '';
+    if(slot && slotMap[slot] !== undefined) slotMap[slot]++;
+    else if(slot) slotMap[slot] = (slotMap[slot]||0) + 1;
+  });
+  var maxSlot = Math.max.apply(null, Object.values(slotMap).concat([1]));
+  var slotHtml = Object.keys(slotMap).map(function(slot){
+    var c = slotMap[slot];
+    var pct = (c / maxSlot) * 100;
+    return '<div style="display:grid;grid-template-columns:90px 1fr 40px;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid var(--light2);">' +
+      '<div style="font-weight:500;color:var(--slate);font-size:11px;">'+slot+'</div>' +
+      '<div style="height:8px;background:var(--light2);border-radius:4px;overflow:hidden;"><div style="width:'+pct+'%;height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:4px;"></div></div>' +
+      '<div style="text-align:right;font-weight:700;color:'+(c>0?'var(--slate)':'var(--muted)')+';font-size:12px;">'+c+'</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('bk-slot-chart').innerHTML = slotHtml || '<div class="tm">No time slot data</div>';
+
+  // ── Day of Week frequency ──
+  var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var dayCount = [0,0,0,0,0,0,0];
+  acks.forEach(function(a){
+    var d = a.bookDate || a.date || '';
+    if(!d) return;
+    var dt = new Date(d + 'T00:00:00');
+    if(!isNaN(dt.getTime())) dayCount[dt.getDay()]++;
+  });
+  var maxDay = Math.max.apply(null, dayCount.concat([1]));
+  // Reorder Mon-Sun
+  var dayOrder = [1,2,3,4,5,6,0];
+  var dayHtml = dayOrder.map(function(di){
+    var c = dayCount[di];
+    var pct = (c / maxDay) * 100;
+    var isTop = c === maxDay && c > 0;
+    return '<div style="display:grid;grid-template-columns:90px 1fr 40px;gap:8px;align-items:center;padding:5px 0;border-bottom:1px solid var(--light2);">' +
+      '<div style="font-weight:'+(isTop?'700':'500')+';color:'+(isTop?'var(--gold)':'var(--slate)')+';font-size:11px;">'+dayNames[di]+(isTop?' 🔥':'')+'</div>' +
+      '<div style="height:8px;background:var(--light2);border-radius:4px;overflow:hidden;"><div style="width:'+pct+'%;height:100%;background:'+(di===0?'rgba(192,84,74,.4)':'linear-gradient(90deg,var(--teal),var(--gold))')+';border-radius:4px;"></div></div>' +
+      '<div style="text-align:right;font-weight:700;color:'+(c>0?'var(--slate)':'var(--muted)')+';font-size:12px;">'+c+'</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('bk-day-chart').innerHTML = dayHtml;
+
+  // ── Heatmap: Day × Timeslot ──
+  var heatData = {};
+  dayOrder.forEach(function(di){ heatData[di] = {}; ALL_TIME_SLOTS.forEach(function(s){ heatData[di][s] = 0; }); });
+  acks.forEach(function(a){
+    var d = a.bookDate || a.date || '';
+    var slot = a.timeSlot || '';
+    if(!d || !slot) return;
+    var dt = new Date(d + 'T00:00:00');
+    if(isNaN(dt.getTime())) return;
+    var di = dt.getDay();
+    if(heatData[di] && heatData[di][slot] !== undefined) heatData[di][slot]++;
+  });
+  var heatMax = 1;
+  dayOrder.forEach(function(di){ ALL_TIME_SLOTS.forEach(function(s){ heatMax = Math.max(heatMax, heatData[di][s]); }); });
+
+  var shortDays = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  var hmHtml = '<table style="width:100%;border-collapse:collapse;font-size:10px;min-width:500px;">' +
+    '<thead><tr><th style="padding:6px 4px;text-align:left;font-size:9px;color:var(--muted);"></th>' +
+    ALL_TIME_SLOTS.map(function(s){ return '<th style="padding:6px 2px;text-align:center;font-size:9px;color:var(--muted);white-space:nowrap;">'+s.replace(' AM','a').replace(' PM','p')+'</th>'; }).join('') +
+    '</tr></thead><tbody>' +
+    dayOrder.map(function(di, idx){
+      return '<tr>' +
+        '<td style="padding:5px 6px;font-weight:600;color:var(--slate);font-size:10px;">'+shortDays[idx]+'</td>' +
+        ALL_TIME_SLOTS.map(function(s){
+          var v = heatData[di][s];
+          var intensity = v > 0 ? Math.max(0.15, v / heatMax) : 0;
+          var bg = v > 0 ? 'rgba(45,110,95,' + intensity.toFixed(2) + ')' : 'var(--light2)';
+          var txt = v > 0 ? '#fff' : 'transparent';
+          return '<td style="padding:4px 2px;text-align:center;"><div style="background:'+bg+';color:'+txt+';border-radius:4px;padding:4px 0;font-weight:700;font-size:10px;min-width:22px;">'+(v>0?v:'')+'</div></td>';
+        }).join('') +
+      '</tr>';
+    }).join('') +
+    '</tbody></table>';
+  document.getElementById('bk-heatmap').innerHTML = hmHtml;
+
+  // ══════════════════════════════════════════════════
+  //  BOOKING SUBMISSION TIME ANALYSIS
+  //  Uses both Bookings sheet timestamps AND ack dates
+  // ══════════════════════════════════════════════════
+  // Collect all records with submission timestamps
+  var bookingsWithTime = allBookings.filter(function(b){ return b.submitted; });
+  // If no explicit submission timestamps, fall back to ack dates
+  if(!bookingsWithTime.length) bookingsWithTime = allBookings;
+
+  // ── Hour of day analysis ──
+  var hourCounts = {};
+  for(var h=0; h<24; h++) hourCounts[h] = 0;
+  bookingsWithTime.forEach(function(b){
+    var raw = b.submitted || b.Submitted || '';
+    if(!raw) return;
+    var d = new Date(raw);
+    if(isNaN(d.getTime())) return;
+    // Get hour in PHT
+    var phtStr = d.toLocaleString('en-PH', {timeZone:'Asia/Manila', hour:'numeric', hour12:false});
+    var hr = parseInt(phtStr) || d.getHours();
+    hourCounts[hr] = (hourCounts[hr]||0) + 1;
+  });
+  var maxHour = Math.max.apply(null, Object.values(hourCounts).concat([1]));
+
+  var hourHtml = '';
+  // Show 6 AM to 11 PM (most relevant hours)
+  for(var hh=6; hh<=23; hh++){
+    var c = hourCounts[hh] || 0;
+    var pct = (c / maxHour) * 100;
+    var isPeak = c === maxHour && c > 0;
+    var label = (hh === 0 ? '12 AM' : hh < 12 ? hh+' AM' : hh === 12 ? '12 PM' : (hh-12)+' PM');
+    hourHtml += '<div style="display:grid;grid-template-columns:60px 1fr 40px;gap:8px;align-items:center;padding:3px 0;border-bottom:1px solid var(--light2);">' +
+      '<div style="font-weight:'+(isPeak?'700':'500')+';color:'+(isPeak?'var(--gold)':'var(--slate)')+';font-size:11px;">'+label+(isPeak?' 🔥':'')+'</div>' +
+      '<div style="height:7px;background:var(--light2);border-radius:4px;overflow:hidden;"><div style="width:'+pct+'%;height:100%;background:linear-gradient(90deg,#4a7fb5,var(--teal));border-radius:4px;"></div></div>' +
+      '<div style="text-align:right;font-weight:700;color:'+(c>0?'var(--slate)':'var(--muted)')+';font-size:12px;">'+c+'</div>' +
+    '</div>';
+  }
+  document.getElementById('bk-submit-hour').innerHTML = hourHtml || '<div class="tm">No booking submission data</div>';
+
+  // ── Day of week submission analysis ──
+  var subDayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var subDayCount = [0,0,0,0,0,0,0];
+  bookingsWithTime.forEach(function(b){
+    var raw = b.submitted || b.Submitted || '';
+    if(!raw) return;
+    var d = new Date(raw);
+    if(!isNaN(d.getTime())) subDayCount[d.getDay()]++;
+  });
+  var maxSubDay = Math.max.apply(null, subDayCount.concat([1]));
+  var subDayOrder = [1,2,3,4,5,6,0]; // Mon→Sun
+  var subDayHtml = subDayOrder.map(function(di){
+    var c = subDayCount[di];
+    var pct = (c / maxSubDay) * 100;
+    var isPeak = c === maxSubDay && c > 0;
+    return '<div style="display:grid;grid-template-columns:90px 1fr 40px;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid var(--light2);">' +
+      '<div style="font-weight:'+(isPeak?'700':'500')+';color:'+(isPeak?'var(--gold)':'var(--slate)')+';font-size:11px;">'+subDayNames[di]+(isPeak?' 🔥':'')+'</div>' +
+      '<div style="height:7px;background:var(--light2);border-radius:4px;overflow:hidden;"><div style="width:'+pct+'%;height:100%;background:linear-gradient(90deg,#d79068,var(--gold));border-radius:4px;"></div></div>' +
+      '<div style="text-align:right;font-weight:700;color:'+(c>0?'var(--slate)':'var(--muted)')+';font-size:12px;">'+c+'</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('bk-submit-day').innerHTML = subDayHtml;
+
+  // ── Lead time analysis ──
+  var leadBuckets = {'Same day':0, '1 day':0, '2-3 days':0, '4-7 days':0, '1-2 weeks':0, '2+ weeks':0};
+  bookingsWithTime.forEach(function(b){
+    var subRaw = b.submitted || b.Submitted || '';
+    var sessDate = b.date || b.Date || '';
+    if(!subRaw || !sessDate) return;
+    var sub = new Date(subRaw);
+    var sess = new Date(String(sessDate).slice(0,10)+'T00:00:00');
+    if(isNaN(sub.getTime()) || isNaN(sess.getTime())) return;
+    var days = Math.max(0, Math.round((sess - sub) / 86400000));
+    if(days === 0) leadBuckets['Same day']++;
+    else if(days === 1) leadBuckets['1 day']++;
+    else if(days <= 3) leadBuckets['2-3 days']++;
+    else if(days <= 7) leadBuckets['4-7 days']++;
+    else if(days <= 14) leadBuckets['1-2 weeks']++;
+    else leadBuckets['2+ weeks']++;
+  });
+  var maxLead = Math.max.apply(null, Object.values(leadBuckets).concat([1]));
+  var leadHtml = Object.keys(leadBuckets).map(function(label){
+    var c = leadBuckets[label];
+    var pct = (c / maxLead) * 100;
+    return '<div style="display:grid;grid-template-columns:90px 1fr 40px;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid var(--light2);">' +
+      '<div style="font-weight:500;color:var(--slate);font-size:11px;">'+label+'</div>' +
+      '<div style="height:7px;background:var(--light2);border-radius:4px;overflow:hidden;"><div style="width:'+pct+'%;height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:4px;"></div></div>' +
+      '<div style="text-align:right;font-weight:700;color:'+(c>0?'var(--slate)':'var(--muted)')+';font-size:12px;">'+c+'</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('bk-lead-time').innerHTML = leadHtml || '<div class="tm">No lead time data</div>';
+}
+
+function setText(id, val){
+  var el = document.getElementById(id);
+  if(el){ var v = el.querySelector('.rs-val'); if(v) v.textContent = val; }
+}
+
 function renderReports(){
   const yr = parseInt(new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Manila'}).split('-')[0]);
   const mo = parseInt(new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Manila'}).split('-')[1]) - 1;
@@ -6623,12 +8111,13 @@ function setRepMode(mode){
 
 function setRepCat(cat){
   CUR_REP_CAT = cat;
-  ['financial','clients','packages','operations'].forEach(c=>{
+  ['financial','bookings','clients','packages','operations'].forEach(c=>{
     const el  = document.getElementById('rep-cat-'+c);
     const btn = document.getElementById('rcat-'+c);
     if(el)  el.style.display = c===cat ? '' : 'none';
     if(btn) btn.classList.toggle('active', c===cat);
   });
+  if(cat === 'bookings') renderBookingsReport();
 }
 
 // ================================================================
@@ -6645,13 +8134,14 @@ function openPrintCenter(){
     {id:'pc-mop',           label:'Payment Method Detail',    desc:'Cash, GCash, Maya, BPI breakdown',                 cat:'financial', checked:true },
     {id:'pc-packages',      label:'Package Performance',      desc:'Revenue and sessions per package',                 cat:'packages',  checked:true },
     {id:'pc-pkg-chart',     label:'Package Bar Chart',        desc:'Visual revenue comparison',                        cat:'packages',  checked:false},
+    {id:'pc-bookings',      label:'Bookings Report',          desc:'All bookings with time slots and status',           cat:'bookings',  checked:true },
     {id:'pc-registrations', label:'Registration List',        desc:'All check-ins with time and SM consent',           cat:'clients',   checked:false},
     {id:'pc-arrival',       label:'Arrival Type Summary',     desc:'Walk-in vs booked breakdown',                      cat:'clients',   checked:false},
     {id:'pc-heatmap',       label:'Time Heatmap',             desc:'Peak session hours in PHT',                        cat:'clients',   checked:false},
     {id:'pc-tasks',         label:'Task Summary',             desc:'Delivered, pending, EOD count',                    cat:'operations',checked:false},
     {id:'pc-transfers',     label:'Fund Transfers & Refunds', desc:'Cash to bank and client refunds',                  cat:'operations',checked:false},
   ];
-  const catLabels = {financial:'💰 Financial', packages:'📦 Packages', clients:'👥 Clients', operations:'⚙ Operations'};
+  const catLabels = {financial:'💰 Financial', bookings:'📅 Bookings', packages:'📦 Packages', clients:'👥 Clients', operations:'⚙ Operations'};
   let lastCat='', gridHtml='';
   OPTS.forEach(opt=>{
     if(opt.cat!==lastCat){ gridHtml+='<div class="print-group-label">'+catLabels[opt.cat]+'</div>'; lastCat=opt.cat; }
@@ -7003,22 +8493,113 @@ function _buildReports(prefixes, label){
   const ackMap={};
   acks.forEach(a=>{ ackMap[a.fbName]=a; });
 
-  renderFinancialReport(txns, allExp, allFT, eods, label);
+  renderFinancialReport(txns, allExp, allFT, eods, label, acks, prefixes);
   renderClientsReport(regs, txnMap, ackMap, label, prefixes);
   renderPackagesReport(txns, regs, txnMap, ackMap, label);
   renderOperationsReport(txns, eods, allFT, gifts, label);
+  renderBookingsReport();
   notify('Reports generated for '+label,'success');
 }
 
 // ════════════════════════════════
 // FINANCIAL
 // ════════════════════════════════
-function renderFinancialReport(txns, allExp, allFT, eods, label){
+// HMU artist cost per session — used by the profit forecast (persisted locally)
+function getHmuCost(){
+  var v = parseFloat(localStorage.getItem('cls_hmu_cost'));
+  return (isNaN(v) || v < 0) ? 1000 : v; // default ₱1,000/session
+}
+function saveHmuCost(){
+  var v = parseFloat(document.getElementById('fc-hmu-cost').value) || 0;
+  localStorage.setItem('cls_hmu_cost', String(v));
+  notify('💄 HMU cost set to ₱' + fmt(v) + '/session — regenerate the report to refresh the forecast', 'success');
+}
+
+function renderFinancialReport(txns, allExp, allFT, eods, label, acks, prefixes){
   const totalRev  = txns.reduce((s,t)=>s+(+t.total||0),0);
   const totalExp  = allExp.reduce((s,e)=>s+(+e.amt||0),0);
   const totalDisc = txns.reduce((s,t)=>s+(+t.discount||0),0);
   const netIncome = totalRev - totalExp;
   const avgInv    = txns.length ? Math.round(totalRev/txns.length) : 0;
+
+  // ══════════════════════════════════════════════
+  //  MONTH PROFIT FORECAST
+  //  actual net + upcoming confirmed bookings − HMU artist fees − projected expenses
+  // ══════════════════════════════════════════════
+  try {
+    var fcBox = document.getElementById('fin-forecast');
+    if (fcBox && prefixes && prefixes.length === 1) {
+      var monthPrefix = prefixes[0];               // e.g. "2026-07"
+      var today = todayStr();                      // PHT today
+      var isCurrentMonth = today.slice(0,7) === monthPrefix;
+      var isFutureMonth  = monthPrefix > today.slice(0,7);
+      var hmuCost = getHmuCost();
+      document.getElementById('fc-hmu-cost').value = hmuCost;
+
+      // Upcoming confirmed bookings in this month (bookDate >= today, not cancelled)
+      var upcoming = (acks||[]).filter(function(a){
+        var d = String(a.bookDate||'').slice(0,10);
+        var st = String(a.status||'').toLowerCase();
+        return d >= today && st !== 'cancelled';
+      });
+      var upcomingRev = upcoming.reduce(function(s,a){
+        return s + (parseFloat(a.totalPrice) || parseFloat(a.downpayment) || 0);
+      }, 0);
+
+      // HMU sessions this month — past ones already paid the artist (cost is in
+      // expenses if recorded); we forecast the fee for UPCOMING HMU sessions.
+      var hmuAll = (acks||[]).filter(function(a){
+        return _hasHMU(a.service) && String(a.status||'').toLowerCase() !== 'cancelled';
+      });
+      var hmuUpcoming = upcoming.filter(function(a){ return _hasHMU(a.service); });
+      var hmuFees = hmuUpcoming.length * hmuCost;
+
+      // Projected remaining operating expenses (run-rate) — current month only
+      var projExp = 0, daysElapsed = 0, daysRemaining = 0;
+      if (isCurrentMonth) {
+        var yr = parseInt(monthPrefix.slice(0,4)), mo = parseInt(monthPrefix.slice(5,7));
+        var daysInMonth = new Date(yr, mo, 0).getDate();
+        daysElapsed = parseInt(today.slice(8,10));
+        daysRemaining = Math.max(0, daysInMonth - daysElapsed);
+        var dailyExpRate = daysElapsed > 0 ? totalExp / daysElapsed : 0;
+        projExp = Math.round(dailyExpRate * daysRemaining);
+      }
+
+      var forecast = netIncome + upcomingRev - hmuFees - projExp;
+      var fMax = Math.max(Math.abs(netIncome), upcomingRev, hmuFees, projExp, Math.abs(forecast), 1);
+
+      function fcRow(lbl, val, color, sign){
+        var pct = Math.min(100, Math.round(Math.abs(val)/fMax*100));
+        return '<div class="chart-bar-row">'+
+          '<div class="chart-bar-label" style="width:170px;">'+lbl+'</div>'+
+          '<div class="chart-bar-track"><div class="chart-bar-fill" style="width:'+pct+'%;background:'+color+';"></div></div>'+
+          '<div class="chart-bar-val" style="color:'+color+';">'+(sign||'')+'₱'+fmt(Math.abs(val))+'</div>'+
+        '</div>';
+      }
+
+      var html = '';
+      html += fcRow('Net income so far', netIncome, netIncome>=0?'var(--teal)':'var(--danger)', netIncome>=0?'':'−');
+      html += fcRow('+ Upcoming bookings ('+upcoming.length+')', upcomingRev, 'var(--gold)', '+');
+      if (hmuUpcoming.length) html += fcRow('− HMU artist fees ('+hmuUpcoming.length+' × ₱'+fmt(hmuCost)+')', hmuFees, 'var(--danger)', '−');
+      if (projExp > 0) html += fcRow('− Projected expenses ('+daysRemaining+' days left)', projExp, 'var(--danger)', '−');
+      html += '<div style="border-top:2px solid var(--border);margin:8px 0 4px;"></div>';
+      html += fcRow('🔮 FORECASTED MONTH PROFIT', forecast, forecast>=0?'var(--success)':'var(--danger)', forecast>=0?'':'−');
+
+      // Insight pills
+      var fcMargin = (totalRev + upcomingRev) > 0 ? Math.round(forecast/(totalRev+upcomingRev)*100) : 0;
+      html += '<div style="margin-top:12px;">'+
+        '<span class="insight-pill">📈 Forecast margin: '+fcMargin+'%</span>'+
+        '<span class="insight-pill">💄 HMU sessions this month: '+hmuAll.length+' ('+hmuUpcoming.length+' upcoming)</span>'+
+        (isFutureMonth ? '<span class="insight-pill">📅 Future month — based on confirmed bookings only</span>' : '')+
+        (!isCurrentMonth && !isFutureMonth ? '<span class="insight-pill">📗 Past month — forecast equals actual results</span>' : '')+
+        (forecast<0 ? '<span class="insight-pill" style="background:rgba(192,84,74,0.08);border-color:rgba(192,84,74,0.2);color:var(--danger);">⚠ Forecast is negative — review expenses</span>' : '')+
+      '</div>';
+
+      fcBox.innerHTML = html;
+    } else if (fcBox) {
+      fcBox.innerHTML = '<div class="tm">Forecast is available when a single month is selected.</div>';
+    }
+  } catch(fcErr) { console.error('forecast:', fcErr); }
 
   // Stats
   document.getElementById('fin-total-rev').innerHTML = '<div class="rs-label">Total Revenue</div><div class="rs-val rs-teal">₱'+fmt(totalRev)+'</div>';
@@ -7926,6 +9507,330 @@ function loadBlocked(){
 }
 function saveBlocked(arr){ localStorage.setItem('cl_blocked', JSON.stringify(arr)); }
 
+// ════════════════════════════════════════
+//  QUICK BOOK — Add a booking from the calendar page
+// ════════════════════════════════════════
+function openQuickBook(){
+  var today = todayStr();
+  var slotOpts = ALL_TIME_SLOTS.map(function(s){
+    return '<option value="'+s+'">'+s+'</option>';
+  }).join('');
+
+  // Build client datalist for autocomplete
+  var clientNames = (DB.clients||[]).map(function(c){ return c.fbName||''; }).filter(Boolean);
+  var datalist = '<datalist id="qb-client-list">' + clientNames.map(function(n){ return '<option value="'+escHtml(n)+'">'; }).join('') + '</datalist>';
+
+  var html =
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;">'+
+      '<div>'+
+        '<h3 style="margin:0;font-size:18px;">📅 Quick Book — Same Day</h3>'+
+        '<p style="color:var(--muted);font-size:12px;margin:4px 0 0;">Create a walk-in booking for today or a specific date</p>'+
+      '</div>'+
+      '<button onclick="closeModal()" style="background:none;border:1px solid var(--border);border-radius:8px;width:32px;height:32px;font-size:16px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;">✕</button>'+
+    '</div>'+
+    datalist+
+    '<div style="margin-top:20px;display:grid;gap:14px;">'+
+      '<div class="field" style="margin:0;">'+
+        '<label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--slate);">Client Name *</label>'+
+        '<input type="text" id="qb-name" class="sinput" placeholder="Start typing…" list="qb-client-list" autocomplete="off" style="width:100%;" oninput="qbCheckRepeat()">'+
+        '<div id="qb-repeat-badge" style="display:none;margin-top:4px;font-size:11px;"></div>'+
+      '</div>'+
+      '<div class="field" style="margin:0;">'+
+        '<label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--slate);">Package / Service *</label>'+
+        '<select id="qb-service" class="sinput" style="width:100%;" onchange="qbAutoPrice()">'+
+          '<option value="">— Select Service —</option>'+
+          '<optgroup label="Self-Shoot">'+
+            '<option value="Snapshot Selfie" data-price="500" data-pax="1">Snapshot Selfie (₱500)</option>'+
+            '<option value="Tribe Time" data-price="800" data-pax="4">Tribe Time (₱800)</option>'+
+            '<option value="Crowd Cam" data-price="1000" data-pax="6">Crowd Cam (₱1,000)</option>'+
+            '<option value="Crew Captures" data-price="1200" data-pax="10">Crew Captures (₱1,200)</option>'+
+            '<option value="Frenzy Snaps Birthday" data-price="700" data-pax="4">Frenzy Snaps Birthday (₱700)</option>'+
+            '<option value="Party Clicks Birthday" data-price="1000" data-pax="6">Party Clicks Birthday (₱1,000)</option>'+
+            '<option value="Click Capture Birthday" data-price="1500" data-pax="10">Click Capture Birthday (₱1,500)</option>'+
+          '</optgroup>'+
+          '<optgroup label="Photographer — Styleshots">'+
+            '<option value="Styleshots" data-price="1500" data-pax="1">Styleshots (₱1,500)</option>'+
+            '<option value="Promo Styleshots" data-price="0" data-pax="1">Promo Styleshots + HMU 💄</option>'+
+            '<option value="Couple Styleshots" data-price="2500" data-pax="2">Couple Styleshots (₱2,500)</option>'+
+            '<option value="Couple Styleshots Promo" data-price="0" data-pax="2">Couple Styleshots Promo + HMU 💄</option>'+
+            '<option value="Luxe Mode" data-price="3500" data-pax="1">Luxe Mode + HMU 💄 (₱3,500)</option>'+
+            '<option value="The Coat Code" data-price="3500" data-pax="1">The Coat Code + HMU 💄 (₱3,500)</option>'+
+          '</optgroup>'+
+          '<optgroup label="Photographer — Family & Occasions">'+
+            '<option value="Pop Reveal" data-price="3000" data-pax="4">Pop Reveal (₱3,000)</option>'+
+            '<option value="Radiant Mama - Mama Love" data-price="2000" data-pax="1">Radiant Mama — Mama Love (₱2,000)</option>'+
+            '<option value="Radiant Mama - Glowing Mom" data-price="4500" data-pax="1">Radiant Mama — Glowing Mom + HMU 💄 (₱5,500)</option>'+
+            '<option value="Candid Kids" data-price="1500" data-pax="3">Candid Kids (from ₱1,500)</option>'+
+            '<option value="Family Portraits" data-price="1700" data-pax="10">Family Portraits (from ₱1,700)</option>'+
+            '<option value="PAWtraits" data-price="1500" data-pax="4">PAWtraits (from ₱1,500)</option>'+
+          '</optgroup>'+
+          '<optgroup label="Photographer — Graduation & Bridal">'+
+            '<option value="Cap and Gown" data-price="700" data-pax="1">Cap and Gown (₱700)</option>'+
+            '<option value="Grad-U-Click" data-price="1500" data-pax="5">Grad-U-Click (₱1,500)</option>'+
+            '<option value="VIP Grad Glam" data-price="3000" data-pax="1">VIP Grad Glam + HMU 💄 (₱3,000)</option>'+
+            '<option value="Bridal Bliss" data-price="5000" data-pax="2">Bridal Bliss (₱5,000)</option>'+
+          '</optgroup>'+
+          '<optgroup label="Other">'+
+            '<option value="Photographer Session" data-price="0" data-pax="1">Photographer Session (custom)</option>'+
+            '<option value="Studio Rental" data-price="0" data-pax="1">Studio Rental</option>'+
+          '</optgroup>'+
+          '<optgroup label="Events">'+
+            '<option value="Event Booking" data-price="0" data-pax="1">Event Booking</option>'+
+            '<option value="Booth Rental" data-price="0" data-pax="1">Booth Rental</option>'+
+          '</optgroup>'+
+        '</select>'+
+      '</div>'+
+      '<div class="frow c2" style="gap:10px;">'+
+        '<div class="field" style="margin:0;">'+
+          '<label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--slate);">Date *</label>'+
+          '<input type="date" id="qb-date" class="sinput" min="'+today+'" value="'+today+'" style="width:100%;" onchange="qbCheckSlots()">'+
+        '</div>'+
+        '<div class="field" style="margin:0;">'+
+          '<label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--slate);">Time Slot *</label>'+
+          '<select id="qb-time" class="sinput" style="width:100%;"><option value="">— Select Time Slot —</option>'+slotOpts+'</select>'+
+        '</div>'+
+      '</div>'+
+      '<div id="qb-slots-info" style="background:rgba(81,137,125,.06);border:1px solid rgba(81,137,125,.15);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--teal);">11 slots available — 0 booked</div>'+
+      '<div class="frow c2" style="gap:10px;">'+
+        '<div class="field" style="margin:0;">'+
+          '<label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--slate);">Price (₱)</label>'+
+          '<input type="number" id="qb-price" class="sinput" value="0" min="0" style="width:100%;">'+
+        '</div>'+
+        '<div class="field" style="margin:0;">'+
+          '<label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--slate);">Guests (Pax)</label>'+
+          '<input type="number" id="qb-pax" class="sinput" value="1" min="1" style="width:100%;">'+
+        '</div>'+
+      '</div>'+
+      '<div class="field" style="margin:0;">'+
+        '<label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--slate);">Client Email *</label>'+
+        '<input type="email" id="qb-email" class="sinput" placeholder="email@example.com" style="width:100%;">'+
+        '<div style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5;">This is where we\'ll send the photo drive link — please use a valid Gmail or Yahoo email address.</div>'+
+      '</div>'+
+      '<div class="field" style="margin:0;">'+
+        '<label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--slate);">Notes</label>'+
+        '<input type="text" id="qb-notes" class="sinput" placeholder="e.g. Birthday, special request, add-ons…" style="width:100%;">'+
+      '</div>'+
+      '<div style="background:rgba(81,137,125,.04);border:1px solid rgba(81,137,125,.12);border-radius:10px;padding:14px;">'+
+        '<div style="font-size:13px;font-weight:700;color:var(--slate);margin-bottom:4px;">📋 Acknowledgement Receipt — Auto-generated</div>'+
+        '<div style="font-size:11px;color:var(--muted);margin-bottom:10px;">An AR number will be created automatically for this booking.</div>'+
+        '<div class="frow c2" style="gap:10px;">'+
+          '<div class="field" style="margin:0;"><label style="font-size:11px;font-weight:600;color:var(--slate);">Downpayment (₱)</label>'+
+          '<input type="number" id="qb-dp" class="sinput" value="0" min="0" style="width:100%;"></div>'+
+          '<div class="field" style="margin:0;"><label style="font-size:11px;font-weight:600;color:var(--slate);">Payment Method</label>'+
+          '<select id="qb-mop" class="sinput" style="width:100%;"><option>Cash</option><option>GCash</option><option>Maya</option><option>BPI</option><option>Card</option></select></div>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+    '<div style="display:flex;flex-direction:column;gap:8px;margin-top:18px;">'+
+      '<div style="display:flex;gap:8px;justify-content:flex-end;">'+
+        '<button class="btn btn-outline" onclick="closeModal()">Cancel</button>'+
+        '<button class="btn btn-teal" onclick="submitQuickBook(false)" id="qb-submit-btn">📅 Create Booking</button>'+
+      '</div>'+
+      '<button class="btn btn-gold" onclick="submitQuickBook(true)" style="width:100%;">✉ Create & Send Confirmation</button>'+
+    '</div>';
+
+  openModal(html);
+  qbCheckSlots();
+}
+
+// Check if client is a repeat visitor
+function qbCheckRepeat(){
+  var name = (document.getElementById('qb-name').value||'').trim().toLowerCase();
+  var badge = document.getElementById('qb-repeat-badge');
+  if(!name || name.length < 2){ badge.style.display='none'; return; }
+  var client = (DB.clients||[]).find(function(c){ return (c.fbName||'').toLowerCase() === name; });
+  if(client){
+    var visits = (DB.registrations||[]).filter(function(r){ return (r.fbName||'').toLowerCase() === name; }).length;
+    var spent = (DB.transactions||[]).filter(function(t){ return (t.clientName||'').toLowerCase() === name; }).reduce(function(s,t){ return s+(parseFloat(t.total)||0); }, 0);
+    badge.style.display = '';
+    badge.innerHTML = '<span style="background:rgba(81,137,125,.1);color:var(--teal);padding:3px 10px;border-radius:10px;font-weight:600;">🔄 Repeat client — '+visits+' visit'+(visits!==1?'s':'')+' · ₱'+Math.round(spent).toLocaleString()+' lifetime</span>';
+    // Auto-fill email if we have it
+    var emailEl = document.getElementById('qb-email');
+    if(client.email && !emailEl.value) emailEl.value = client.email;
+  } else {
+    badge.style.display = '';
+    badge.innerHTML = '<span style="background:rgba(218,175,52,.1);color:var(--gold);padding:3px 10px;border-radius:10px;font-weight:600;">🆕 New client</span>';
+  }
+}
+
+// Auto-fill price and pax from package selection
+function qbAutoPrice(){
+  var sel = document.getElementById('qb-service');
+  var opt = sel.options[sel.selectedIndex];
+  if(opt && opt.dataset.price) document.getElementById('qb-price').value = opt.dataset.price;
+  if(opt && opt.dataset.pax)   document.getElementById('qb-pax').value = opt.dataset.pax;
+
+  // ─── HMU alert if package includes Hair & Makeup ───
+  var svc = sel.value || '';
+  var hmuBox = document.getElementById('qb-hmu-alert');
+  if(_hasHMU(svc)){
+    if(!hmuBox){
+      hmuBox = document.createElement('div');
+      hmuBox.id = 'qb-hmu-alert';
+      hmuBox.style.cssText = 'background:linear-gradient(135deg,#fff4e6,#ffe8cc);border:2px solid #d79068;border-radius:8px;padding:10px 12px;margin-top:8px;font-size:11px;color:#5c3717;';
+      sel.parentNode.parentNode.appendChild(hmuBox);
+    }
+    hmuBox.innerHTML = '💄 <strong>Hair &amp; Makeup package</strong> — remember to contact your HMU artist to confirm availability. Client should arrive <strong>1.5 hrs early</strong> for HMU prep.';
+    hmuBox.style.display = '';
+  } else if(hmuBox){
+    hmuBox.style.display = 'none';
+  }
+}
+
+// Check slot availability for selected date
+async function qbCheckSlots(){
+  var date = document.getElementById('qb-date').value;
+  var info = document.getElementById('qb-slots-info');
+  if(!date){ info.textContent = ''; return; }
+  info.textContent = '⏳ Checking availability…';
+  info.style.color = 'var(--muted)';
+  try{
+    if(hasUrl()){
+      var r = await gasCall('getBookedSlots', { date: date });
+      if(r.ok){
+        var taken = (r.takenSlots||[]).length;
+        var avail = ALL_TIME_SLOTS.length - taken;
+        info.textContent = avail + ' slot'+(avail!==1?'s':'')+' available — ' + taken + ' booked';
+        info.style.color = avail > 0 ? 'var(--teal)' : 'var(--danger)';
+        // Disable taken slots in dropdown
+        var timeEl = document.getElementById('qb-time');
+        Array.from(timeEl.options).forEach(function(o){
+          if(o.value && (r.takenSlots||[]).indexOf(o.value) > -1){
+            o.disabled = true; o.textContent = o.value + ' (taken)';
+          } else if(o.value){
+            o.disabled = false; o.textContent = o.value;
+          }
+        });
+        return;
+      }
+    }
+    info.textContent = ALL_TIME_SLOTS.length + ' slots available';
+    info.style.color = 'var(--teal)';
+  }catch(e){
+    info.textContent = ALL_TIME_SLOTS.length + ' slots available';
+    info.style.color = 'var(--teal)';
+  }
+}
+
+async function submitQuickBook(sendEmail){
+  var name    = (document.getElementById('qb-name').value||'').trim();
+  var email   = (document.getElementById('qb-email').value||'').trim();
+  var service = document.getElementById('qb-service').value;
+  var bookDate= document.getElementById('qb-date').value;
+  var timeSlot= document.getElementById('qb-time').value;
+  var mop     = document.getElementById('qb-mop').value;
+  var dp      = parseFloat(document.getElementById('qb-dp').value)||0;
+  var price   = parseFloat(document.getElementById('qb-price').value)||0;
+  var pax     = parseInt(document.getElementById('qb-pax').value)||1;
+  var notes   = (document.getElementById('qb-notes').value||'').trim();
+
+  if(!name)    { notify('⚠ Enter client name','error'); return; }
+  if(!service) { notify('⚠ Select a package','error'); return; }
+  if(!bookDate){ notify('⚠ Select a booking date','error'); return; }
+  if(!timeSlot){ notify('⚠ Select a time slot','error'); return; }
+  if(!email)   { notify('⚠ Email required — this is where the photo drive link will be sent','error'); return; }
+  if(!/^[^@]+@[^@]+\.[^@]+$/.test(email)){ notify('⚠ Please enter a valid email address','error'); return; }
+
+  var btn = document.getElementById('qb-submit-btn');
+  btn.disabled = true; btn.textContent = '⏳ Booking…';
+
+  try{
+    var ackId = uid();
+    var ackNum = 'AR-' + bookDate.replace(/-/g,'').slice(2) + '-' + ackId.slice(0,4).toUpperCase();
+    var ack = {
+      id: ackId, ackNum: ackNum, date: todayStr(),
+      fbName: name, email: email, service: service,
+      bookDate: bookDate, timeSlot: timeSlot,
+      mop: mop, downpayment: dp, totalPrice: price,
+      pax: pax, status: 'Confirmed',
+      notes: notes, source: 'Quick Book (POS)'
+    };
+
+    if(hasUrl()){
+      // Both paths use confirmBooking so the Google Calendar event is ALWAYS created.
+      // skipEmail:true suppresses the confirmation email for the plain "Create Booking" button.
+      var r = await gasCall('confirmBooking', {
+        fbName: name, email: email, service: service,
+        bookDate: bookDate, timeSlot: timeSlot,
+        mop: mop, downpayment: dp, totalPrice: price,
+        pax: pax, notes: notes,
+        skipEmail: !sendEmail
+      });
+
+      // Race-condition: slot got taken between opening the form and submitting
+      if(r && r.code === 'SLOT_TAKEN'){
+        if(confirm('⚠ ' + timeSlot + ' on ' + bookDate + ' was just taken by another booking.\n\nBook it ANYWAY (double-book on purpose)?\n\nCancel to pick a different slot instead.')){
+          r = await gasCall('confirmBooking', {
+            fbName: name, email: email, service: service,
+            bookDate: bookDate, timeSlot: timeSlot,
+            mop: mop, downpayment: dp, totalPrice: price,
+            pax: pax, notes: notes,
+            skipEmail: !sendEmail,
+            force: true
+          });
+        } else {
+          btn.disabled = false; btn.textContent = '📅 Create Booking';
+          qbCheckSlots(); // refresh availability display
+          return;
+        }
+      }
+
+      if(r.ok){
+        ack.ackNum = r.ackNum || ackNum;
+        if(r.ack) Object.assign(ack, r.ack);
+      }
+
+      // 💄 HMU: offer to block the following slot for hair & makeup time
+      if(_isPhotographerPkg(service)){
+        createHmuPrepTask(ack);
+        createEditingTask(ack);
+      }
+      if(_hasHMU(service)){
+        var _hmuIdx = ALL_TIME_SLOTS.indexOf(timeSlot);
+        var _hmuNext = (_hmuIdx > -1 && _hmuIdx < ALL_TIME_SLOTS.length - 1) ? ALL_TIME_SLOTS[_hmuIdx + 1] : null;
+        if(_hmuNext && confirm('💄 HMU package booked at ' + timeSlot + '.\n\nBlock the NEXT slot (' + _hmuNext + ') too, so the session has extra time for hair & makeup?')){
+          gasCall('createBlock', {
+            date: bookDate,
+            timeSlot: _hmuNext,
+            reason: 'HMU extension — ' + name
+          }).then(function(br){
+            if(br && br.ok) notify('🚫 ' + _hmuNext + ' blocked for HMU prep', 'success');
+          }).catch(function(){});
+          // Also record locally so the blocked list shows it
+          var _blocks = loadBlocked();
+          _blocks.push({ id: uid(), date: bookDate, fullDay: false, slots: [_hmuNext], reason: 'HMU extension — ' + name, addedAt: todayStr() });
+          saveBlocked(_blocks);
+        }
+      }
+    }
+
+    if(!DB.acknowledgements) DB.acknowledgements = [];
+    DB.acknowledgements.push(ack);
+
+    // Add/update client record
+    var existingClient = DB.clients.find(function(c){ return (c.fbName||'').toLowerCase() === name.toLowerCase(); });
+    if(existingClient){
+      if(email && !existingClient.email){ existingClient.email = email; push('saveClient', existingClient); }
+    } else {
+      var cl = { id:uid(), fbName:name, email:email, type:'booked', added:todayStr() };
+      DB.clients.push(cl);
+      push('saveClient', cl);
+    }
+
+    saveLocal();
+    closeModal();
+    var msg = sendEmail
+      ? '✅ Booked & confirmation sent to '+email
+      : '✅ Booking created for '+name+' on '+bookDate+' at '+timeSlot;
+    notify(msg, 'success');
+    logActivity('Quick Booked', ack.ackNum + ' — ' + name + ' / ' + service + ' / ' + timeSlot + (sendEmail ? ' (email sent)' : ''), 'success');
+    renderCalendar();
+  }catch(e){
+    notify('❌ '+e.message, 'error');
+    btn.disabled = false; btn.textContent = '📅 Create Booking';
+  }
+}
+
 function openBlockDialog(){
   const today = todayStr();
   const slots = ALL_TIME_SLOTS.map(function(s){
@@ -8020,22 +9925,55 @@ function renderBlockedList(){
     return;
   }
 
-  // Sort by date
-  const sorted = blocks.slice().sort(function(a,b){ return a.date.localeCompare(b.date); });
+  // Group by date for the "Clear all for this date" button
+  var byDate = {};
+  blocks.forEach(function(b){
+    if(!byDate[b.date]) byDate[b.date] = [];
+    byDate[b.date].push(b);
+  });
+  var sortedDates = Object.keys(byDate).sort();
 
-  el.innerHTML = sorted.map(function(b){
-    const d = new Date(b.date + 'T00:00:00').toLocaleDateString('en-PH',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
-    const slotLabel = b.fullDay ? 'Full day' : b.slots.join(', ');
-    const isPast = b.date < todayStr();
-    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--light2);gap:10px;opacity:' + (isPast?'0.5':'1') + ';">' +
-      '<div style="min-width:0;">' +
-        '<div style="font-size:12px;font-weight:600;color:var(--slate);">🚫 ' + d + '</div>' +
-        '<div style="font-size:11px;color:var(--muted);margin-top:1px;">' + slotLabel + (b.reason ? ' — ' + b.reason : '') + '</div>' +
-      '</div>' +
-      '<button class="btn btn-sm btn-outline" style="flex-shrink:0;" onclick="removeBlock(\'b.id\')">Remove</button>' +
+  el.innerHTML = sortedDates.map(function(dateKey){
+    var dayBlocks = byDate[dateKey];
+    var d = new Date(dateKey + 'T00:00:00').toLocaleDateString('en-PH',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+    var isPast = dateKey < todayStr();
+
+    var header = '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0 6px;border-top:1px dashed var(--light2);gap:10px;opacity:' + (isPast?'0.5':'1') + ';">' +
+      '<div style="font-size:13px;font-weight:700;color:var(--slate);">🚫 ' + d + (dayBlocks.length > 1 ? ' <span style="font-size:10px;font-weight:500;color:var(--danger);background:rgba(192,84,74,.1);padding:2px 7px;border-radius:8px;margin-left:6px;">' + dayBlocks.length + ' blocks</span>' : '') + '</div>' +
+      (dayBlocks.length > 1 && !isPast ? '<button class="btn btn-sm btn-danger" onclick="clearAllBlocksForDate(\'' + dateKey + '\')">🗑 Clear All for This Date</button>' : '') +
     '</div>';
+
+    var items = dayBlocks.map(function(b){
+      var slotLabel = b.fullDay ? 'Full day' : b.slots.join(', ');
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0 6px 12px;font-size:11px;color:var(--muted);border-left:2px solid var(--light2);margin-bottom:3px;opacity:' + (isPast?'0.5':'1') + ';">' +
+        '<div>' + slotLabel + (b.reason ? ' — ' + b.reason : '') + '</div>' +
+        '<button class="btn btn-sm btn-outline" style="flex-shrink:0;font-size:10px;padding:3px 8px;" onclick="removeBlock(\'' + b.id + '\')">Remove</button>' +
+      '</div>';
+    }).join('');
+
+    return header + items;
   }).join('');
 }
+
+async function clearAllBlocksForDate(dateStr){
+  if(!confirm('This will delete ALL block events for ' + dateStr + ' from your Google Calendar and the local list. Continue?')) return;
+
+  // Remove from Google Calendar
+  if(hasUrl()){
+    notify('Removing all blocks for ' + dateStr + '…','info');
+    try{
+      var r = await gasCall('clearBlocksForDate', { date: dateStr });
+      if(r && r.ok) notify('✓ Removed ' + r.removed + ' block event(s) from Google Calendar','success');
+    }catch(e){ notify('Calendar cleanup failed: ' + e.message,'error'); }
+  }
+
+  // Remove from local storage
+  var blocks = loadBlocked().filter(function(b){ return b.date !== dateStr; });
+  saveBlocked(blocks);
+  renderBlockedList();
+  renderCalendar();
+}
+
 
 async function removeBlock(id){
   if(!confirm('Remove this block? Clients will be able to book this slot again.')) return;
@@ -8305,6 +10243,170 @@ if('serviceWorker' in navigator){
       })
       .catch(err => console.log('SW registration failed:', err));
   });
+}
+
+// ════════════════════════════════════════════════════════════════
+//  👥 CLIENTS PAGE — CRM link + summary KPIs
+// ════════════════════════════════════════════════════════════════
+function renderClientsHub(){
+  // Pull all source data
+  var clients = (DB.clients || []).slice();
+  var regs    = (DB.registrations || []);
+  var txns    = (DB.transactions || []).filter(function(t){
+    return !String(t.invoiceNum || '').startsWith('[VOID]');
+  });
+  var acks    = (DB.acknowledgements || []);
+
+  // Build lookups
+  var regsByName = {}, txnByName = {}, lastVisit = {};
+  regs.forEach(function(r){
+    var n = String(r.fbName || '').toLowerCase().trim(); if(!n) return;
+    regsByName[n] = (regsByName[n] || 0) + 1;
+    if(r.date && (!lastVisit[n] || r.date > lastVisit[n])) lastVisit[n] = r.date;
+  });
+  txns.forEach(function(t){
+    var n = String(t.clientName || '').toLowerCase().trim(); if(!n) return;
+    if(!txnByName[n]) txnByName[n] = { spent:0, count:0 };
+    txnByName[n].spent += (+t.total || 0);
+    txnByName[n].count += 1;
+  });
+
+  // Merge: ensure every named human is counted (some only appear in regs/txns)
+  var allNames = {};
+  clients.forEach(function(c){ var n=String(c.fbName||'').toLowerCase().trim(); if(n) allNames[n] = c; });
+  Object.keys(regsByName).forEach(function(n){ if(!allNames[n]) allNames[n] = {fbName:n, _stub:true}; });
+  Object.keys(txnByName).forEach(function(n){ if(!allNames[n]) allNames[n] = {fbName:n, _stub:true}; });
+  acks.forEach(function(a){
+    var n = String(a.fbName||'').toLowerCase().trim();
+    if(n && !allNames[n]) allNames[n] = {fbName:n, email:a.email||'', _stub:true};
+  });
+
+  var merged = Object.keys(allNames).map(function(k){ return allNames[k]; });
+  var now = new Date();
+  var cut60Date = new Date(); cut60Date.setDate(cut60Date.getDate() - 60);
+  var cut60 = cut60Date.toISOString().slice(0, 10);
+  var curMonth = now.getMonth() + 1;
+  var curYear = now.getFullYear();
+  var monthStart = curYear + '-' + String(curMonth).padStart(2,'0') + '-01';
+
+  // Compute counters
+  var totalC = merged.length;
+  var activeC = 0, vipC = 0, newC = 0, emailC = 0, bdayC = 0;
+  var tierCount = { 'VIP':0, 'Gold':0, 'Silver':0, 'Bronze':0, 'New':0 };
+  var missingEmailC = 0, missingPhoneC = 0, missingBdayC = 0;
+
+  merged.forEach(function(c){
+    var n = String(c.fbName||'').toLowerCase().trim();
+    var sessions = regsByName[n] || 0;
+    var spent = (txnByName[n] && txnByName[n].spent) || 0;
+    var lv = lastVisit[n] || '';
+
+    if(lv && lv >= cut60) activeC++;
+    if(sessions >= 5 || spent >= 10000) vipC++;
+
+    // New this month = first reg/txn this month
+    var firstSeen = lv || c.added || '';
+    if(firstSeen && firstSeen >= monthStart) newC++;
+
+    if(c.email && String(c.email).indexOf('@') > -1) emailC++;
+    else if(!c._stub) missingEmailC++;
+
+    if(!c.phone && !c._stub) missingPhoneC++;
+    if(!c.birthday && !c._stub) missingBdayC++;
+
+    // Birthday this month
+    if(c.birthday){
+      var bd = new Date(c.birthday);
+      if(!isNaN(bd.getTime()) && (bd.getMonth() + 1) === curMonth) bdayC++;
+    }
+
+    // Tier
+    var pts = parseInt(c.points) || Math.floor(spent / 100);
+    var tier = 'New';
+    if(sessions > 0 || spent > 0){
+      tier = 'Bronze';
+      if(pts >= 50) tier = 'Silver';
+      if(pts >= 150) tier = 'Gold';
+      if(pts >= 300) tier = 'VIP';
+    }
+    if(tierCount[tier] !== undefined) tierCount[tier]++;
+  });
+
+  // ── Render KPI values ─────────────────────────────
+  document.getElementById('cl-kpi-total').textContent = totalC.toLocaleString();
+  document.getElementById('cl-kpi-active').textContent = activeC.toLocaleString();
+  document.getElementById('cl-kpi-active-sub').textContent = (activeC && totalC) ? (Math.round(activeC/totalC*100) + '% of total') : 'visited recently';
+  document.getElementById('cl-kpi-vip').textContent = vipC.toLocaleString();
+  document.getElementById('cl-kpi-new').textContent = newC.toLocaleString();
+  document.getElementById('cl-kpi-new-sub').textContent = 'in ' + now.toLocaleDateString('en-PH', {month:'long'});
+  document.getElementById('cl-kpi-email').textContent = emailC.toLocaleString();
+  document.getElementById('cl-kpi-email-sub').textContent = (emailC && totalC) ? (Math.round(emailC/totalC*100) + '% reachable') : 'have email on file';
+  document.getElementById('cl-kpi-bday').textContent = bdayC.toLocaleString();
+
+  // ── Tier distribution bar ─────────────────────────
+  var tierColors = { 'VIP':'#d79068', 'Silver':'#9c9c9c', 'Bronze':'#a17a4a', 'New':'#6b8c8c' };
+  var sumTiers = tierCount['VIP'] + tierCount['Silver'] + tierCount['Bronze'] + tierCount['New'];
+  var tierHtml = '';
+  ['VIP','Silver','Bronze','New'].forEach(function(t){
+    var n = tierCount[t];
+    var pct = sumTiers ? Math.round(n/sumTiers*100) : 0;
+    tierHtml += '<div style="margin-bottom:10px;">' +
+      '<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;">' +
+        '<span style="color:'+tierColors[t]+';font-weight:700;">'+t+'</span>' +
+        '<span style="color:var(--muted);">'+n+' · '+pct+'%</span>' +
+      '</div>' +
+      '<div style="background:var(--light,#f4f7f6);border-radius:4px;height:6px;overflow:hidden;">' +
+        '<div style="background:'+tierColors[t]+';width:'+pct+'%;height:100%;"></div>' +
+      '</div>' +
+    '</div>';
+  });
+  document.getElementById('cl-tier-chart').innerHTML = tierHtml;
+
+  // ── Attention needed ──────────────────────────────
+  var attHtml = '';
+  if(missingEmailC) attHtml += '<div style="padding:7px 0;border-bottom:1px solid var(--light2,#e8edee);display:flex;justify-content:space-between;font-size:12px;"><span>📭 Missing email</span><strong style="color:var(--danger);">'+missingEmailC+'</strong></div>';
+  if(missingPhoneC) attHtml += '<div style="padding:7px 0;border-bottom:1px solid var(--light2,#e8edee);display:flex;justify-content:space-between;font-size:12px;"><span>📱 Missing phone</span><strong style="color:var(--danger);">'+missingPhoneC+'</strong></div>';
+  if(missingBdayC)  attHtml += '<div style="padding:7px 0;border-bottom:1px solid var(--light2,#e8edee);display:flex;justify-content:space-between;font-size:12px;"><span>🎂 Missing birthday</span><strong style="color:var(--danger);">'+missingBdayC+'</strong></div>';
+  // At-risk: visited 60-120 days ago, no recent visit
+  var atriskC = 0;
+  var cut120Date = new Date(); cut120Date.setDate(cut120Date.getDate() - 120);
+  var cut120 = cut120Date.toISOString().slice(0, 10);
+  merged.forEach(function(c){
+    var n = String(c.fbName||'').toLowerCase().trim();
+    var lv = lastVisit[n] || '';
+    if(lv && lv < cut60 && lv >= cut120) atriskC++;
+  });
+  if(atriskC) attHtml += '<div style="padding:7px 0;border-bottom:1px solid var(--light2,#e8edee);display:flex;justify-content:space-between;font-size:12px;"><span>⚠ At risk (60-120d)</span><strong style="color:var(--gold);">'+atriskC+'</strong></div>';
+
+  attHtml += '<div style="margin-top:10px;font-size:11px;color:var(--muted);">Fix these in the CRM → <a href="https://hellotalentff-max.github.io/clicklounge-clickcard/" target="_blank" style="color:var(--teal);">Open Cleanup tab →</a></div>';
+  document.getElementById('cl-attention').innerHTML = attHtml || '<div style="color:var(--success);font-size:13px;">✅ All clean! No missing info.</div>';
+
+  // ── Recent additions ──────────────────────────────
+  var recent = merged
+    .filter(function(c){ return c.added || lastVisit[String(c.fbName||'').toLowerCase().trim()]; })
+    .map(function(c){
+      var n = String(c.fbName||'').toLowerCase().trim();
+      return {
+        fbName: c.fbName,
+        email: c.email,
+        added: c.added || lastVisit[n] || '',
+        sessions: regsByName[n] || 0
+      };
+    })
+    .sort(function(a,b){ return String(b.added).localeCompare(String(a.added)); })
+    .slice(0, 6);
+
+  var recHtml = recent.map(function(c){
+    return '<div style="padding:7px 0;border-bottom:1px solid var(--light2,#e8edee);display:flex;justify-content:space-between;align-items:center;font-size:12px;">' +
+      '<div><strong>'+escHtmlSafe(c.fbName)+'</strong><br><span style="color:var(--muted);font-size:10px;">'+(c.email||'no email')+'</span></div>' +
+      '<div style="text-align:right;font-size:10px;color:var(--muted);">'+(c.added||'').slice(0,10)+'<br>'+c.sessions+' visit'+(c.sessions!==1?'s':'')+'</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('cl-recent').innerHTML = recHtml || '<div style="color:var(--muted);font-size:13px;">No recent additions.</div>';
+}
+
+function escHtmlSafe(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 </script>

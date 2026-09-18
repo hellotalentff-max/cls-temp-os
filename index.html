@@ -2945,12 +2945,13 @@ function renderCalendarLists(acks, yr, mo){
           evTime = d.toLocaleTimeString('en-PH',{hour:'numeric',minute:'2-digit',hour12:true,timeZone:'Asia/Manila'});
         }catch(e){}
       }
-      // Total package price: read from an explicit "Total: ₱9,500" line in the
-      // event description (if the backend writes one — see createBooking).
+      // Total package price: createBooking (GAS) already writes this into the
+      // event description as "Package: {pkg} (₱{price})" — pull the number
+      // straight out of that line's parentheses. No backend change needed.
       // Downpayment is intentionally NOT auto-filled — the amount actually
       // collected can vary per client, so staff always enters it manually
       // when creating the receipt (original behavior, unchanged).
-      var totalMatch = (ev.description||'').match(/Total:\s*[₱P]?\s*([\d,]+(?:\.\d+)?)/i);
+      var totalMatch = (ev.description||'').match(/Package:.*?\(\s*[₱P]?\s*([\d,]+(?:\.\d+)?)\s*\)/i);
       var evTotal = totalMatch ? totalMatch[1].replace(/,/g,'') : '';
       pendHtml += '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--light2);background:rgba(255,243,205,0.2);">'+
         '<div style="width:8px;height:8px;border-radius:50%;background:#ffc107;flex-shrink:0;"></div>'+
